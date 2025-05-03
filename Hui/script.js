@@ -330,7 +330,7 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Por favor, selecciona una parte de la imagen primero');
             return;
         }
-
+        
         // Obtener las dimensiones y posición de la selección
         const boxWidth = parseInt(simulatorSelectionBox.style.width);
         const boxHeight = parseInt(simulatorSelectionBox.style.height);
@@ -343,6 +343,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
+        // Mostrar indicador de carga
+        simulatorLoading.style.display = 'block';
+        
         // Crear un canvas temporal para el recorte
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
@@ -351,29 +354,75 @@ document.addEventListener('DOMContentLoaded', function() {
         canvas.width = boxWidth;
         canvas.height = boxHeight;
         
-        // Dibujar solo la parte seleccionada de la imagen en el canvas
-        ctx.drawImage(
-            simulatorImage,
-            boxLeft, boxTop, // Coordenadas de inicio en la imagen original
-            boxWidth, boxHeight, // Tamaño del área a recortar
-            0, 0, // Coordenadas de destino en el canvas
-            boxWidth, boxHeight // Tamaño en el canvas
-        );
+        // Crear una imagen para el recorte
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
         
-        // Convertir el canvas a una URL de datos
-        const croppedImageUrl = canvas.toDataURL('image/png');
+        img.onload = function() {
+            // Dibujar solo la parte seleccionada de la imagen en el canvas
+            ctx.drawImage(
+                img,
+                boxLeft, boxTop, // Coordenadas de inicio en la imagen original
+                boxWidth, boxHeight, // Tamaño del área a recortar
+                0, 0, // Coordenadas de destino en el canvas
+                boxWidth, boxHeight // Tamaño en el canvas
+            );
+            
+            // Convertir el canvas a una URL de datos
+            const croppedImageUrl = canvas.toDataURL('image/png');
+            
+            // Actualizar la imagen recortada
+            simulatorCroppedImage.src = croppedImageUrl;
+            
+            // Ocultar indicador de carga
+            simulatorLoading.style.display = 'none';
+            
+            // Mostrar contenedor de explicación
+            simulatorExplanationContainer.style.display = 'block';
+            
+            // Mostrar información del componente basada en la posición
+            simulatorExplanationContent.innerHTML = `
+                <p><strong>Componente detectado:</strong> ${getComponentName(boxLeft, boxTop)}</p>
+                <p>Esta es la información sobre la parte seleccionada del Cupra Tavascan en la simulación 3D.</p>
+                <p>Este componente es crucial para el funcionamiento óptimo del vehículo.</p>
+                <p>Para más detalles, consulta la sección correspondiente en el manual del propietario o pregunta al asistente virtual.</p>
+            `;
+        };
         
-        // Mostrar explicación
-        simulatorExplanationContainer.style.display = 'block';
-        simulatorExplanationContent.innerHTML = `
-            <p>Esta es la información sobre la parte seleccionada del Cupra Tavascan en la simulación 3D.</p>
-            <p>En una implementación real, aquí aparecería la explicación enviada por el backend después de analizar la imagen recortada.</p>
-        `;
-        
-        // Mostrar la imagen recortada
-        simulatorCroppedImage.src = croppedImageUrl;
-        simulatorCroppedImage.style.display = 'block';
+        // Cargar la imagen actual del simulador
+        img.src = simulatorImage.src;
     });
+
+    // Función para determinar qué componente se ha seleccionado (simulación)
+    function getComponentName(x, y) {
+        // Esta función simula la detección de componentes basada en coordenadas
+        // En una implementación real, esto podría conectarse a una API o base de datos
+        
+        // Zona superior del vehículo
+        if (y < 100) {
+            return "Techo panorámico";
+        }
+        // Zona frontal
+        else if (x < 150 && y > 100 && y < 200) {
+            return "Faros LED adaptativos";
+        }
+        // Zona central
+        else if (x >= 150 && x <= 300 && y > 100 && y < 200) {
+            return "Sistema de info-entretenimiento";
+        }
+        // Zona trasera
+        else if (x > 300) {
+            return "Luz trasera LED dinámica";
+        }
+        // Zona inferior
+        else if (y >= 200) {
+            return "Llantas de aleación de 20 pulgadas";
+        }
+        // Por defecto
+        else {
+            return "Carrocería aerodinámica";
+        }
+    }
 
     const signupForm = document.getElementById('signup-form');
     const carModelSelect = document.getElementById('car-model');
@@ -411,5 +460,201 @@ document.addEventListener('DOMContentLoaded', function() {
             // Mostrar mensaje de error si el modelo no es compatible
             errorMessage.style.display = 'block';
         }
+    });
+
+    // Funcionalidad del chatbot
+    const chatMessages = document.getElementById('chat-messages');
+    const chatInput = document.getElementById('chat-input');
+    const chatSubmitBtn = document.getElementById('chat-submit');
+    
+    // Función para añadir un nuevo mensaje al chat
+    function addMessage(message, isUser = false) {
+        const messageEl = document.createElement('div');
+        messageEl.className = `message ${isUser ? 'user' : 'bot'}`;
+        
+        const messageContent = document.createElement('div');
+        messageContent.className = 'message-content';
+        
+        const messagePara = document.createElement('p');
+        messagePara.textContent = message;
+        
+        messageContent.appendChild(messagePara);
+        messageEl.appendChild(messageContent);
+        
+        // Encontrar el contenedor de mensajes y añadir el mensaje
+        const messagesContainer = document.querySelector('.chat-messages');
+        messagesContainer.appendChild(messageEl);
+        
+        // Auto-scroll hacia abajo para mostrar el mensaje más reciente
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        
+        return messageEl;
+    }
+    
+    // Función para enviar un mensaje al chatbot y mostrar la respuesta
+    function sendToChatbot(userMessage) {
+        // Añadir mensaje de usuario al chat
+        addMessage(userMessage, true);
+        
+        // Limpiar el input después de enviar
+        chatInput.value = '';
+        
+        // Mostrar indicador de escritura
+        const typingIndicator = document.createElement('div');
+        typingIndicator.className = 'message bot typing';
+        typingIndicator.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+        
+        // Añadir el indicador de escritura al contenedor de mensajes
+        const messagesContainer = document.querySelector('.chat-messages');
+        messagesContainer.appendChild(typingIndicator);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        
+        // Simular llamada a la API (reemplazar con llamada real a la API)
+        fetch('http://localhost:8000/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ message: userMessage })
+        })
+        .then(response => {
+            // Eliminar indicador de escritura
+            messagesContainer.removeChild(typingIndicator);
+            
+            if (!response.ok) {
+                throw new Error('Error en la comunicación con el chatbot');
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Mostrar respuesta del bot
+            addMessage(data.response);
+        })
+        .catch(error => {
+            // Eliminar indicador de escritura
+            if (typingIndicator.parentNode) {
+                messagesContainer.removeChild(typingIndicator);
+            }
+            
+            // Mostrar mensaje de error
+            const errorMsg = 'Lo siento, ha ocurrido un error. Por favor, inténtalo de nuevo más tarde.';
+            addMessage(errorMsg);
+            console.error('Error:', error);
+            
+            // Usar una función de respaldo para simular respuestas
+            handleChatbotFallback(userMessage);
+        });
+    }
+    
+    // Event listeners para entrada de chat
+    chatSubmitBtn.addEventListener('click', function() {
+        const message = chatInput.value.trim();
+        if (message) {
+            sendToChatbot(message);
+            chatInput.value = '';
+        }
+    });
+    
+    chatInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            const message = chatInput.value.trim();
+            if (message) {
+                sendToChatbot(message);
+                chatInput.value = '';
+            }
+        }
+    });
+    
+    // Función de respaldo para cuando falla la llamada a la API (para fines de demostración)
+    function handleChatbotFallback(userMessage) {
+        // Mapeo simple de respuestas para demo
+        const responses = {
+            'hola': '¡Hola! ¿En qué puedo ayudarte con tu CUPRA Tavascan hoy?',
+            'sistema de carga': 'El CUPRA Tavascan cuenta con un sistema de carga rápida de hasta 135 kW que permite cargar del 5% al 80% en aproximadamente 30 minutos en estaciones adecuadas.',
+            'mantenimiento': 'El mantenimiento recomendado para tu CUPRA Tavascan es cada 30.000 km o una vez al año. Puedes programar tu cita en cualquier servicio oficial CUPRA.',
+            'funciones del volante': 'El volante multifunción del CUPRA Tavascan integra controles para infoentretenimiento, asistentes de conducción y selección de modos de conducción. El botón CUPRA permite cambiar rápidamente entre los modos predefinidos.',
+            'modos de conducción': 'El CUPRA Tavascan ofrece varios modos de conducción: Comfort, Sport, CUPRA e Individual. Cada uno modifica parámetros como la respuesta del acelerador, dirección y suspensión adaptativa.'
+        };
+        
+        // Buscar palabras clave en el mensaje del usuario
+        let botResponse = 'Lo siento, no tengo información específica sobre eso. ¿Puedo ayudarte con algo más sobre tu CUPRA Tavascan?';
+        
+        const lowerMessage = userMessage.toLowerCase();
+        
+        Object.keys(responses).forEach(key => {
+            if (lowerMessage.includes(key)) {
+                botResponse = responses[key];
+            }
+        });
+        
+        // Añadir respuesta del bot al chat después de un retraso para simular "pensamiento"
+        setTimeout(() => {
+            addMessage(botResponse);
+        }, 1000);
+    }
+
+    // Función para inicializar y asegurar que el chatbox esté funcionando correctamente
+    function initializeChatbox() {
+        const chatContainer = document.getElementById('chat-container');
+        const chatInput = document.getElementById('chat-input');
+        const chatSubmitBtn = document.getElementById('chat-submit');
+        const messagesContainer = document.querySelector('.chat-messages');
+        
+        if (chatContainer && chatInput && chatSubmitBtn) {
+            console.log("Chatbox inicializado correctamente");
+            
+            // Ensure chat container takes full height
+            chatContainer.style.display = 'flex';
+            chatContainer.style.flexDirection = 'column';
+            chatContainer.style.height = '100%';
+            
+            // Configure the messages container for proper scrolling
+            if (messagesContainer) {
+                messagesContainer.style.overflowY = 'auto';
+                messagesContainer.style.flex = '1';
+                
+                // Aseguramos que haya suficiente espacio para la barra de entrada
+                const chatInputHeight = document.querySelector('.chat-input-container').offsetHeight;
+                messagesContainer.style.paddingBottom = (chatInputHeight + 20) + 'px';
+                
+                // Scroll al último mensaje
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
+            
+            // Focus the input automatically when the page loads
+            setTimeout(() => {
+                chatInput.focus();
+            }, 500);
+            
+            // Remove the event that requires clicking on the container first
+            // Instead, ensure the input can be focused at any time
+            chatInput.addEventListener('click', function(e) {
+                // Stop propagation to prevent other click handlers
+                e.stopPropagation();
+            });
+            
+            // Add welcome message if no messages exist
+            if (document.querySelectorAll('.chat-messages .message').length === 0) {
+                addMessage("¡Hola! Soy tu asistente virtual de CUPRA. ¿En qué puedo ayudarte hoy?", false);
+            }
+        } else {
+            console.error("Faltan elementos del chatbox. Verifica que todos los IDs existan en el HTML.");
+        }
+    }
+    
+    // Inicializar chatbox después de que todo esté cargado
+    window.addEventListener('load', initializeChatbox);
+    
+    // También enfocamos el input cuando se cambia a la pestaña correspondiente
+    document.querySelectorAll('.menu-link').forEach(link => {
+        link.addEventListener('click', function() {
+            // Cuando se cambia de pestaña, verificar si debemos enfocar el chat
+            setTimeout(() => {
+                const chatInput = document.getElementById('chat-input');
+                if (chatInput && window.getComputedStyle(chatInput).display !== 'none') {
+                    chatInput.focus();
+                }
+            }, 300);
+        });
     });
 });

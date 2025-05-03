@@ -595,3 +595,214 @@ footer {
     object-fit: contain;
     transition: transform 0.3s ease;
 }
+
+/* Nueva estructura de dos columnas */
+.two-column-layout {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    height: calc(100vh - 180px); /* Ajustado para tener en cuenta encabezado y footer */
+    max-height: calc(100vh - 180px);
+    overflow: hidden; /* Prevenir scroll del contenedor */
+}
+
+.left-column {
+    flex: 0 0 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow: hidden; /* Prevenir scroll horizontal */
+    height: 100%; /* Asegurar que ocupe toda la altura disponible */
+}
+
+.right-column {
+    flex: 1;
+    overflow-y: auto; /* Permitir scroll solo dentro del contenido derecho */
+    padding-right: 5px; /* Pequeño padding para el scrollbar */
+}
+
+/* Estilos para el chat */
+#chat-container {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 450px;
+    max-height: calc(100vh - 220px); /* Limitamos la altura máxima para evitar problemas con la barra de entrada */
+    overflow: hidden;
+    border: 1px solid rgba(181, 101, 29, 0.3);
+    position: relative; /* Base para posicionamiento absoluto interno */
+}
+
+.chat-header {
+    background-color: rgba(181, 101, 29, 0.8);
+    padding: 15px;
+    color: #fff;
+    text-align: center;
+    position: absolute; /* Posición fija respecto al contenedor */
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 20; /* Mayor que otros elementos para asegurar que esté siempre visible */
+    border-top-left-radius: 12px; 
+    border-top-right-radius: 12px;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    padding-top: 65px; /* Espacio para el header fijo */
+    padding-bottom: 90px; /* Aumentado para dar más espacio a la barra de entrada */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: calc(100% - 70px); /* Ajustada para evitar desbordamiento */
+    position: relative; /* Para que el scroll funcione correctamente */
+    z-index: 5; /* Por debajo de la barra de entrada y header */
+}
+
+.message {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 12px;
+    animation: fadeIn 0.3s ease;
+    position: relative;
+    z-index: 1;
+    word-break: break-word; /* Asegura que el texto se rompa adecuadamente */
+    margin-bottom: 8px;
+}
+
+.message.bot {
+    background-color: rgba(35, 35, 35, 0.8);
+    border-left: 3px solid var(--cupra-copper);
+    align-self: flex-start;
+}
+
+.message.user {
+    background-color: rgba(181, 101, 29, 0.3);
+    border-right: 3px solid var(--cupra-copper);
+    align-self: flex-end;
+    text-align: right;
+}
+
+.chat-input-container {
+    display: flex;
+    padding: 12px 15px;
+    background-color: rgba(35, 35, 35, 0.9);
+    border-top: 1px solid var(--cupra-copper);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 10;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
+    border-bottom-left-radius: 12px; /* Añadido para mantener el redondeo en las esquinas */
+    border-bottom-right-radius: 12px; /* Añadido para mantener el redondeo en las esquinas */
+}
+
+#chat-input {
+    flex-grow: 1;
+    background-color: rgba(45, 45, 45, 0.8);
+    border: 1px solid rgba(181, 101, 29, 0.5);
+    border-radius: 20px;
+    color: #fff;
+    padding: 10px 15px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#chat-input:focus {
+    border-color: var(--cupra-copper);
+    box-shadow: 0 0 0 2px rgba(181, 101, 29, 0.25);
+}
+
+#chat-submit {
+    background-color: var(--cupra-copper);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 50%;
+    margin-left: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+#chat-submit:hover {
+    background-color: #cc7427;
+    transform: scale(1.05);
+}
+
+#chat-submit:active {
+    transform: scale(0.95);
+}
+
+/* Eliminar estilos de quick-actions ya que se removerá este elemento */
+.quick-actions {
+    display: none;
+}
+
+/* Animación para los mensajes */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ajustes responsivos para el diseño de dos columnas */
+@media (max-width: 992px) {
+    .two-column-layout {
+        flex-direction: column;
+        height: auto;
+    }
+    
+    .left-column {
+        flex: none;
+        width: 100%;
+    }
+    
+    .right-column {
+        flex: none;
+        width: 100%;
+    }
+    
+    #chat-container {
+        height: 400px;
+        min-height: auto;
+    }
+    
+    .chat-input-container {
+        padding: 10px;
+    }
+    
+    #chat-input {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
+    
+    #chat-submit {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+    }
+}
+
+/* Estilos específicos para dispositivos móviles pequeños */
+@media (max-width: 576px) {
+    .chat-messages {
+        padding-bottom: 60px; /* Menor espacio para la barra en móviles */
+    }
+    
+    .message {
+        max-width: 90%; /* Los mensajes pueden ser un poco más anchos en móviles */
+    }
+}

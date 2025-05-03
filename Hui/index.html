@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cupra Tavascan - Asistente Digital</title>
     <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div id="signup" class="tab-content active">
@@ -48,87 +49,114 @@
     </nav>
 
     <main>
-        <div class="container">
-            <div id="home" class="tab-content active">
-                <h1>Asistente Digital <strong class="copper-text">CUPRA TAVASCAN</strong></h1>
-                
-                <div class="instructions">
-                    <p>Descubre todo sobre tu Cupra Tavascan de manera interactiva:</p>
-                    <ol>
-                        <li>Sube una imagen de tu vehículo o de los controles</li>
-                    </ol>
+        <div class="two-column-layout">
+            <!-- Columna izquierda - Chat -->
+            <div class="left-column">
+                <div id="chat-container">
+                    <div class="chat-header">
+                        <h2>CUPRA Asistente Virtual</h2>
+                    </div>
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message bot">
+                            <div class="message-content">
+                                <p>¡Hola! Soy tu asistente virtual de CUPRA. ¿En qué puedo ayudarte hoy?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat-input-container">
+                        <input type="text" id="chat-input" placeholder="Escribe tu mensaje aquí...">
+                        <button id="chat-submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
-                
-                <div class="upload-container">
-                    <input type="file" id="file-input" accept="image/*" style="display: none;">
-                    <button class="upload-btn" id="browse-btn">Subir imagen</button>
-                </div>
-                
-                <div id="image-workspace">
-                    <div class="image-container">
-                        <img id="uploaded-image" src="" alt="Imagen subida">
-                        <div class="selection-overlay" id="selection-overlay"></div>
-                        <div class="selection-box" id="selection-box"></div>
+            </div>
+            
+            <!-- Columna derecha - Contenido principal -->
+            <div class="right-column">
+                <div class="container">
+                    <div id="home" class="tab-content active">
+                        <h1>Asistente Digital <strong class="copper-text">CUPRA TAVASCAN</strong></h1>
+                        
+                        <div class="instructions">
+                            <p>Descubre todo sobre tu Cupra Tavascan de manera interactiva:</p>
+                            <ol>
+                                <li>Sube una imagen de tu vehículo o de los controles</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="upload-container">
+                            <input type="file" id="file-input" accept="image/*" style="display: none;">
+                            <button class="upload-btn" id="browse-btn">Subir imagen</button>
+                        </div>
+                        
+                        <div id="image-workspace">
+                            <div class="image-container">
+                                <img id="uploaded-image" src="" alt="Imagen subida">
+                                <div class="selection-overlay" id="selection-overlay"></div>
+                                <div class="selection-box" id="selection-box"></div>
+                            </div>
+                            
+                            <div class="action-buttons">
+                                <button class="action-btn" id="reset-btn">Reiniciar selección</button>
+                                <button class="action-btn" id="submit-btn">Consultar</button>
+                            </div>
+                            
+                            <div class="loading" id="loading">
+                                <div class="spinner"></div>
+                                <p>Analizando imagen...</p>
+                            </div>
+                            
+                            <div class="explanation-container" id="explanation-container">
+                                <h2 class="explanation-title">Información detallada</h2>
+                                <div class="selected-area">
+                                    <img id="cropped-image" class="selected-image" src="" alt="Área seleccionada">
+                                    <div class="explanation-content" id="explanation-content">
+                                        La información sobre esta parte del Cupra Tavascan aparecerá aquí.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    
-                    <div class="action-buttons">
-                        <button class="action-btn" id="reset-btn">Reiniciar selección</button>
-                        <button class="action-btn" id="submit-btn">Consultar</button>
-                    </div>
-                    
-                    <div class="loading" id="loading">
-                        <div class="spinner"></div>
-                        <p>Analizando imagen...</p>
-                    </div>
-                    
-                    <div class="explanation-container" id="explanation-container">
-                        <h2 class="explanation-title">Información detallada</h2>
-                        <div class="selected-area">
-                            <img id="cropped-image" class="selected-image" src="" alt="Área seleccionada">
-                            <div class="explanation-content" id="explanation-content">
-                                La información sobre esta parte del Cupra Tavascan aparecerá aquí.
+
+                    <div id="simulator" class="tab-content">
+                        <h1>Simulador 3D</h1>
+                        <div id="image-viewer">
+                            <button id="prev-btn" class="arrow-btn">⟵</button>
+                            <div id="image-container">
+                                <img id="simulator-image" src="img3d/cap1.png" alt="3D Simulation">
+                                <div class="selection-overlay" id="simulator-selection-overlay"></div>
+                                <div class="selection-box" id="simulator-selection-box"></div>
+                            </div>
+                            <button id="next-btn" class="arrow-btn">⟶</button>
+                        </div>
+                        <div id="zoom-controls">
+                            <button id="zoom-in-btn" class="zoom-btn">Zoom In</button>
+                            <button id="zoom-out-btn" class="zoom-btn">Zoom Out</button>
+                        </div>
+                        <div class="action-buttons">
+                            <button class="action-btn" id="simulator-reset-btn">Reiniciar selección</button>
+                            <button class="action-btn" id="simulator-submit-btn">Consultar</button>
+                        </div>
+                        <div class="loading" id="simulator-loading">
+                            <div class="spinner"></div>
+                            <p>Analizando imagen...</p>
+                        </div>
+                        <div class="explanation-container" id="simulator-explanation-container">
+                            <h2 class="explanation-title">Información detallada</h2>
+                            <div class="selected-area">
+                                <img id="simulator-cropped-image" class="selected-image" src="" alt="Área seleccionada">
+                                <div class="explanation-content" id="simulator-explanation-content">
+                                    La información sobre esta parte del simulador aparecerá aquí.
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div id="simulator" class="tab-content">
-                <h1>Simulador 3D</h1>
-                <div id="image-viewer">
-                    <button id="prev-btn">⟵</button>
-                    <div id="image-container">
-                        <img id="simulator-image" src="img3d/cap1.png" alt="3D Simulation">
-                        <div class="selection-overlay" id="simulator-selection-overlay"></div>
-                        <div class="selection-box" id="simulator-selection-box"></div>
-                    </div>
-                    <button id="next-btn">⟶</button>
-                </div>
-                <div id="zoom-controls">
-                    <button id="zoom-in-btn">Zoom In</button>
-                    <button id="zoom-out-btn">Zoom Out</button>
-                </div>
-                <div class="action-buttons">
-                    <button class="action-btn" id="simulator-reset-btn">Reiniciar selección</button>
-                    <button class="action-btn" id="simulator-submit-btn">Consultar</button>
-                </div>
-                <div class="loading" id="simulator-loading">
-                    <div class="spinner"></div>
-                    <p>Analizando imagen...</p>
-                </div>
-                <div class="explanation-container" id="simulator-explanation-container">
-                    <h2 class="explanation-title">Información detallada</h2>
-                    <div class="selected-area">
-                        <img id="uploaded-image" crossorigin="anonymous" />
-                        <img id="simulator-cropped-image" class="selected-image" src="" alt="Área seleccionada">
-                        
-                        <div class="explanation-content" id="simulator-explanation-content">
-                            La información sobre esta parte del simulador aparecerá aquí.
-                        </div>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </main>
     
