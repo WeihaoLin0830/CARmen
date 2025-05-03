@@ -1,0 +1,178 @@
+index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Chatbot UI</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .chat-container {
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+            height: 400px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .user {
+            background-color: #e6f7ff;
+            margin-left: 20%;
+        }
+        .assistant {
+            background-color: #f0f0f0;
+            margin-right: 20%;
+        }
+        .input-area {
+            display: flex;
+            gap: 10px;
+        }
+        input {
+            flex-grow: 1;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <h1>PDF Chatbot</h1>
+
+    <div class="chat-container" id="chatContainer"></div>
+
+    <div class="input-area">
+        <input type="text" id="messageInput" placeholder="Type your question here..." />
+        <button onclick="sendMessage()">Send</button>
+        <button onclick="createNewSession()">New Session</button>
+    </div>
+
+    <script>
+        let sessionId = null;
+
+        // Create a session when the page loads
+        window.onload = function() {
+            createNewSession();
+        };
+
+        async function createNewSession() {
+            try {
+                const response = await fetch('http://localhost:8000/sessions/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to create session');
+                }
+
+                const data = await response.json();
+                sessionId = data.session_id;
+
+                // Clear chat and add system message
+                const chatContainer = document.getElementById('chatContainer');
+                chatContainer.innerHTML = '<div class="message assistant"><strong>System:</strong> New session created. Ask me about the Cupra Tavascan manual!</div>';
+
+                console.log('Created session:', sessionId);
+            } catch (error) {
+                console.error('Error creating session:', error);
+                document.getElementById('chatContainer').innerHTML +=
+                    `<div class="message assistant"><strong>Error:</strong> Could not connect to the API server. Make sure it's running at http://localhost:8000</div>`;
+            }
+        }
+
+        async function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const message = messageInput.value.trim();
+
+            if (!message) return;
+
+            // Add user message to chat
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.innerHTML += `<div class="message user"><strong>You:</strong> ${message}</div>`;
+
+            // Add loading message
+            let loadingDiv = document.createElement('div');
+            loadingDiv.className = 'message assistant';
+            loadingDiv.innerHTML = '<strong>Assistant:</strong> Thinking...';
+            chatContainer.appendChild(loadingDiv);
+
+            // Scroll to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Clear input
+            messageInput.value = '';
+
+            try {
+                const response = await fetch('http://localhost:8000/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        query: message,
+                        session_id: sessionId,
+                        top_k: 3
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Failed to get response');
+                }
+
+                const data = await response.json();
+
+                // Replace loading message with actual response
+                let answer = data.response.answer || data.raw_text;
+                let pages = '';
+
+                if (data.response.page_numbers && data.response.page_numbers.length > 0) {
+                    pages = `<br><br><small>Pages: ${data.response.page_numbers.join(', ')}</small>`;
+                }
+
+                loadingDiv.innerHTML = `<strong>Assistant:</strong> ${answer}${pages}`;
+
+                // Scroll to bottom
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            } catch (error) {
+                console.error('Error sending message:', error);
+                loadingDiv.innerHTML = '<strong>Assistant:</strong> Sorry, there was an error processing your request. Please try again.';
+            }
+        }
+
+        // Allow sending messages with Enter key
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
