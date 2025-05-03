@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cupra Tavascan - Asistente Digital</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="signup" class="tab-content active">
+        <div class="signup-container">
+            <h1>Bienvenido al <strong class="copper-text">CUPRA TAVASCAN</strong></h1>
+            <p>Regístrate para descubrir todo sobre tu vehículo.</p>
+            <form id="signup-form">
+                <div class="form-group">
+                    <label for="license-plate">Número de matrícula:</label>
+                    <input type="text" id="license-plate" placeholder="Introduce tu matrícula" required>
+                </div>
+                <div class="form-group">
+                    <label for="car-model">Modelo de SEAT:</label>
+                    <select id="car-model" required>
+                        <option value="" disabled selected>Selecciona tu modelo</option>
+                        <option value="CUPRA TAVASCAN">CUPRA TAVASCAN</option>
+                        <option value="SEAT LEON">SEAT LEON</option>
+                        <option value="SEAT IBIZA">SEAT IBIZA</option>
+                        <option value="SEAT ARONA">SEAT ARONA</option>
+                    </select>
+                </div>
+                <button type="submit" class="action-btn">Registrarse</button>
+            </form>
+            <p id="error-message" style="color: red; display: none;">Este modelo no es compatible con esta aplicación.</p>
+        </div>
+    </div>
+    <video id="background-video" autoplay muted loop>
+        <source src="Back.mp4" type="video/mp4">
+        Tu navegador no soporta videos HTML5.
+    </video>
+    <header>
+        <img src="cupra-logo.png" alt="Cupra Logo" class="logo">
+    </header>
+    
+    <nav id="menu">
+        <ul>
+            <li><a href="#home" class="menu-link active">Inicio</a></li>
+            <li><a href="#simulator" class="menu-link">Simulador 3D</a></li>
+            <li><a href="#signup" class="menu-link">Registro</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="container">
+            <div id="home" class="tab-content active">
+                <h1>Asistente Digital <strong class="copper-text">CUPRA TAVASCAN</strong></h1>
+                
+                <div class="instructions">
+                    <p>Descubre todo sobre tu Cupra Tavascan de manera interactiva:</p>
+                    <ol>
+                        <li>Sube una imagen de tu vehículo o de los controles</li>
+                    </ol>
+                </div>
+                
+                <div class="upload-container">
+                    <input type="file" id="file-input" accept="image/*" style="display: none;">
+                    <button class="upload-btn" id="browse-btn">Subir imagen</button>
+                </div>
+                
+                <div id="image-workspace">
+                    <div class="image-container">
+                        <img id="uploaded-image" src="" alt="Imagen subida">
+                        <div class="selection-overlay" id="selection-overlay"></div>
+                        <div class="selection-box" id="selection-box"></div>
+                    </div>
+                    
+                    <div class="action-buttons">
+                        <button class="action-btn" id="reset-btn">Reiniciar selección</button>
+                        <button class="action-btn" id="submit-btn">Consultar</button>
+                    </div>
+                    
+                    <div class="loading" id="loading">
+                        <div class="spinner"></div>
+                        <p>Analizando imagen...</p>
+                    </div>
+                    
+                    <div class="explanation-container" id="explanation-container">
+                        <h2 class="explanation-title">Información detallada</h2>
+                        <div class="selected-area">
+                            <img id="cropped-image" class="selected-image" src="" alt="Área seleccionada">
+                            <div class="explanation-content" id="explanation-content">
+                                La información sobre esta parte del Cupra Tavascan aparecerá aquí.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="simulator" class="tab-content">
+                <h1>Simulador 3D</h1>
+                <div id="image-viewer">
+                    <button id="prev-btn">⟵</button>
+                    <div id="image-container">
+                        <img id="simulator-image" src="img3d/cap1.png" alt="3D Simulation">
+                        <div class="selection-overlay" id="simulator-selection-overlay"></div>
+                        <div class="selection-box" id="simulator-selection-box"></div>
+                    </div>
+                    <button id="next-btn">⟶</button>
+                </div>
+                <div id="zoom-controls">
+                    <button id="zoom-in-btn">Zoom In</button>
+                    <button id="zoom-out-btn">Zoom Out</button>
+                </div>
+                <div class="action-buttons">
+                    <button class="action-btn" id="simulator-reset-btn">Reiniciar selección</button>
+                    <button class="action-btn" id="simulator-submit-btn">Consultar</button>
+                </div>
+                <div class="loading" id="simulator-loading">
+                    <div class="spinner"></div>
+                    <p>Analizando imagen...</p>
+                </div>
+                <div class="explanation-container" id="simulator-explanation-container">
+                    <h2 class="explanation-title">Información detallada</h2>
+                    <div class="selected-area">
+                        <img id="simulator-cropped-image" class="selected-image" src="" alt="Área seleccionada">
+                        <div class="explanation-content" id="simulator-explanation-content">
+                            La información sobre esta parte del simulador aparecerá aquí.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+    
+    <footer>
+        © 2025 CUPRA. Todos los derechos reservados.
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
