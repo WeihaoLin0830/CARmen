@@ -1,0 +1,226 @@
+:root {
+    --cupra-copper: #b5651d;
+    --cupra-dark: #232323;
+    --cupra-light: #f5f5f5;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+
+body {
+    background-color: var(--cupra-dark);
+    color: var(--cupra-light);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: #000;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.logo {
+    height: 40px;
+}
+
+.copper-text {
+    color: var(--cupra-copper);
+}
+
+main {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.container {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+h1 strong {
+    font-weight: 600;
+}
+
+.upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.upload-btn {
+    background-color: var(--cupra-copper);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+.upload-btn:hover {
+    background-color: #cc7427;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(181, 101, 29, 0.3);
+}
+
+#image-workspace {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.image-container {
+    position: relative;
+    max-width: 100%;
+    border: 2px solid var(--cupra-copper);
+    background-color: #333;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+#uploaded-image {
+    display: block;
+    max-width: 100%;
+    max-height: 600px;
+}
+
+.selection-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+}
+
+.selection-box {
+    position: absolute;
+    border: 2px dashed var(--cupra-copper);
+    background-color: rgba(181, 101, 29, 0.2);
+    pointer-events: none;
+    display: none;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.action-btn {
+    background-color: var(--cupra-dark);
+    color: white;
+    border: 1px solid var(--cupra-copper);
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    background-color: var(--cupra-copper);
+}
+
+.explanation-container {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-left: 4px solid var(--cupra-copper);
+    margin-top: 2rem;
+    display: none;
+}
+
+.explanation-title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--cupra-copper);
+}
+
+.explanation-content {
+    line-height: 1.6;
+}
+
+.selected-area {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.selected-image {
+    border: 1px solid var(--cupra-copper);
+    max-width: 150px;
+    max-height: 150px;
+}
+
+footer {
+    background-color: #000;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.loading {
+    display: none;
+    margin: 1rem 0;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(181, 101, 29, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--cupra-copper);
+    animation: spin 1s ease-in-out infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.instructions {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 1rem;
+    border-radius: 4px;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.instructions ol {
+    margin-left: 1.5rem;
+}
+
+.instructions li {
+    margin-bottom: 0.5rem;
+}
