@@ -19,21 +19,21 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextBtn = document.getElementById('next-btn');
     const zoomInBtn = document.getElementById('zoom-in-btn');
     const zoomOutBtn = document.getElementById('zoom-out-btn');
-    const img3dFolder = 'img3d/';
-    const images = Array.from({ length: 24 }, (_, i) => `cap${i + 1}.png`); // Genera ['cap1.jpg', 'cap2.jpg', ..., 'cap24.jpg']
+    const img3dFolder = './cupra_frames/';
+    const images = Array.from({ length: 93 }, (_, i) => `${i + 1}.png`); 
     let currentImageIndex = 0;
     let zoomLevel = 1;
 
     // Cambiar imagen al hacer clic en las flechas
     prevBtn.addEventListener('click', function() {
-        // Cambiar a la imagen siguiente (girar a la derecha)
-        currentImageIndex = (currentImageIndex + 1) % images.length;
+        // Cambiar a la imagen anterior (girar a la izquierda)
+        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
         simulatorImage.src = img3dFolder + images[currentImageIndex];
     });
 
     nextBtn.addEventListener('click', function() {
-        // Cambiar a la imagen anterior (girar a la izquierda)
-        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+        // Cambiar a la imagen siguiente (girar a la derecha)
+        currentImageIndex = (currentImageIndex + 1) % images.length;
         simulatorImage.src = img3dFolder + images[currentImageIndex];
     });
 
@@ -156,7 +156,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const ctx = canvas.getContext('2d');
         // Crear una imagen para cargar la original
         const img = new Image();
+        img.crossOrigin = 'anonymous'; // Ensure cross-origin requests are allowed
         img.onload = function() {
+            if (!img.complete || img.naturalWidth === 0) {
+                console.error('Failed to load image. Ensure the image source allows cross-origin requests.');
+                alert('Error: Unable to process the image due to cross-origin restrictions.');
+                loading.style.display = 'none';
+                return;
+            }
             // Configurar el canvas con el tamaño de la selección
             canvas.width = boxWidth;
             canvas.height = boxHeight;
@@ -261,32 +268,55 @@ document.addEventListener('DOMContentLoaded', function() {
     startY = 0;
     isSelecting = false;
 
-    // Iniciar selección
+    // Mejorar la estabilidad del recuadro de selección en el simulador
     simulatorSelectionOverlay.addEventListener('mousedown', function (e) {
         isSelecting = true;
-        startX = e.offsetX;
-        startY = e.offsetY;
-        simulatorSelectionBox.style.left = `${startX}px`;
-        simulatorSelectionBox.style.top = `${startY}px`;
+        
+        // Usar el mismo enfoque que en la selección de la imagen subida
+        const rect = simulatorSelectionOverlay.getBoundingClientRect();
+        startX = e.clientX - rect.left;
+        startY = e.clientY - rect.top;
+        
+        simulatorSelectionBox.style.display = 'block';
+        simulatorSelectionBox.style.left = startX + 'px';
+        simulatorSelectionBox.style.top = startY + 'px';
         simulatorSelectionBox.style.width = '0px';
         simulatorSelectionBox.style.height = '0px';
-        simulatorSelectionBox.style.display = 'block';
     });
 
-    // Actualizar selección
     simulatorSelectionOverlay.addEventListener('mousemove', function (e) {
         if (!isSelecting) return;
-        const currentX = e.offsetX;
-        const currentY = e.offsetY;
-        simulatorSelectionBox.style.width = `${Math.abs(currentX - startX)}px`;
-        simulatorSelectionBox.style.height = `${Math.abs(currentY - startX)}px`;
-        simulatorSelectionBox.style.left = `${Math.min(currentX, startX)}px`;
-        simulatorSelectionBox.style.top = `${Math.min(currentY, startY)}px`;
+        
+        // Usar el mismo enfoque que en la selección de la imagen subida
+        const rect = simulatorSelectionOverlay.getBoundingClientRect();
+        const currentX = e.clientX - rect.left;
+        const currentY = e.clientY - rect.top;
+        
+        // Calcular dimensiones y posición del recuadro
+        const width = Math.abs(currentX - startX);
+        const height = Math.abs(currentY - startY);
+        const left = Math.min(startX, currentX);
+        const top = Math.min(startY, currentY);
+        
+        simulatorSelectionBox.style.width = width + 'px';
+        simulatorSelectionBox.style.height = height + 'px';
+        simulatorSelectionBox.style.left = left + 'px';
+        simulatorSelectionBox.style.top = top + 'px';
     });
 
     // Finalizar selección
     document.addEventListener('mouseup', function () {
-        isSelecting = false;
+        if (isSelecting) {
+            isSelecting = false;
+            
+            // Validar tamaño mínimo para evitar selecciones accidentales
+            const boxWidth = parseInt(simulatorSelectionBox.style.width);
+            const boxHeight = parseInt(simulatorSelectionBox.style.height);
+            
+            if (boxWidth < 5 || boxHeight < 5) {
+                simulatorSelectionBox.style.display = 'none'; // Ocultar si es muy pequeño
+            }
+        }
     });
 
     // Reiniciar selección
@@ -294,40 +324,55 @@ document.addEventListener('DOMContentLoaded', function() {
         simulatorSelectionBox.style.display = 'none';
     });
 
-    // Enviar coordenadas al backend
-    simulatorSubmitBtn.addEventListener('click', function () {
+    // Procesar selección en el simulador
+    simulatorSubmitBtn.addEventListener('click', function() {
         if (simulatorSelectionBox.style.display === 'none') {
             alert('Por favor, selecciona una parte de la imagen primero');
             return;
         }
 
-        // Obtener coordenadas de selección
-        const boxLeft = parseInt(simulatorSelectionBox.style.left);
-        const boxTop = parseInt(simulatorSelectionBox.style.top);
+        // Obtener las dimensiones y posición de la selección
         const boxWidth = parseInt(simulatorSelectionBox.style.width);
         const boxHeight = parseInt(simulatorSelectionBox.style.height);
-
-        // Ajustar las coordenadas según la escala de la imagen
-        const scaleX = simulatorImage.naturalWidth / simulatorImage.clientWidth;
-        const scaleY = simulatorImage.naturalHeight / simulatorImage.clientHeight;
-
-        const adjustedBoxLeft = boxLeft * scaleX;
-        const adjustedBoxTop = boxTop * scaleY;
-        const adjustedBoxWidth = boxWidth * scaleX;
-        const adjustedBoxHeight = boxHeight * scaleY;
-
-        console.log(`Coordenadas ajustadas: ${adjustedBoxLeft}, ${adjustedBoxTop}, ${adjustedBoxWidth}, ${adjustedBoxHeight}`);
-
-        // Mostrar indicador de carga
-        simulatorLoading.style.display = 'block';
-
-        // Simular envío al backend y mostrar explicación
-        setTimeout(() => {
-            simulatorLoading.style.display = 'none';
-            simulatorExplanationContainer.style.display = 'block';
-            simulatorExplanationContent.textContent = 'Información generada por el backend.';
-            simulatorCroppedImage.src = simulatorImage.src; // Simula el recorte
-        }, 1500);
+        const boxLeft = parseInt(simulatorSelectionBox.style.left);
+        const boxTop = parseInt(simulatorSelectionBox.style.top);
+        
+        // Verificar que la selección tenga un tamaño mínimo
+        if (boxWidth < 10 || boxHeight < 10) {
+            alert('Por favor, haz una selección más grande');
+            return;
+        }
+        
+        // Crear un canvas temporal para el recorte
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Establecer dimensiones del canvas al tamaño del recorte
+        canvas.width = boxWidth;
+        canvas.height = boxHeight;
+        
+        // Dibujar solo la parte seleccionada de la imagen en el canvas
+        ctx.drawImage(
+            simulatorImage,
+            boxLeft, boxTop, // Coordenadas de inicio en la imagen original
+            boxWidth, boxHeight, // Tamaño del área a recortar
+            0, 0, // Coordenadas de destino en el canvas
+            boxWidth, boxHeight // Tamaño en el canvas
+        );
+        
+        // Convertir el canvas a una URL de datos
+        const croppedImageUrl = canvas.toDataURL('image/png');
+        
+        // Mostrar explicación
+        simulatorExplanationContainer.style.display = 'block';
+        simulatorExplanationContent.innerHTML = `
+            <p>Esta es la información sobre la parte seleccionada del Cupra Tavascan en la simulación 3D.</p>
+            <p>En una implementación real, aquí aparecería la explicación enviada por el backend después de analizar la imagen recortada.</p>
+        `;
+        
+        // Mostrar la imagen recortada
+        simulatorCroppedImage.src = croppedImageUrl;
+        simulatorCroppedImage.style.display = 'block';
     });
 
     const signupForm = document.getElementById('signup-form');
