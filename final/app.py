@@ -51,6 +51,23 @@ except Exception as e:
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
+def get_image_paths(image_ids):
+    """
+    Given a list of image IDs, return the paths of the images
+    located in the extracted_content_manual/images directory.
+    """
+    image_dir = os.path.join(content_dir, "images")
+    image_paths = []
+
+    for image_id in image_ids:
+        image_path = os.path.join(image_dir, f"{image_id}.jpg")
+        if os.path.exists(image_path):
+            image_paths.append(image_path)
+        else:
+            print(f"Image not found: {image_path}")
+
+    return image_paths
+
 def main(query):
     """
     Function to handle text queries.
@@ -151,6 +168,13 @@ def image(image_path, box_coordinates):
         
         #print(f"\nJSON Response generated successfully: {json_response}")
         #print(f"Processing completed in {time.time() - start_time:.2f} seconds")
+        #print(f"Response: {json_response}
+
+        if "figure_numbers" in json_response:
+            image_ids = json_response["figure_numbers"]
+            image_paths = get_image_paths(image_ids)
+            json_response["image_paths"] = image_paths
+            
         return json_response
         
     except Exception as e:
@@ -207,6 +231,13 @@ def image_endpoint():
         # Convert to ensure JSON serialization works
         json_response = jsonify(response)
         print("JSON response created successfully")
+
+        # Retrieve image paths for the top-ranked images
+        if "figure_numbers" in response:
+            image_ids = response["figure_numbers"]
+            image_paths = get_image_paths(image_ids)
+            response["image_paths"] = image_paths
+
         return json_response
         
     except Exception as e:
