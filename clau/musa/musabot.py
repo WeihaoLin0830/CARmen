@@ -4,20 +4,60 @@ import requests
 from PIL import Image, ImageDraw, ImageFont
 import base64
 
+# ⚠️ Reemplaza esto con tu clave real de API
 API_KEY = "4abJigJ5xBlkZA4bDx6F"
 WORKSPACE = "hackupc-70ysk"
 WORKFLOW_ID = "small-object-detection-sahi-3"
-IMAGE_PATH = "clau\imagenes\cap1.png"
+IMAGE_PATH = os.path.join("clau", "imagenes", "cap5.png")  # Evita usar "\" en rutas
+# IMAGE_PATH = os.path.join("clau", "imagenes", "cap15.png")  # Evita usar "\" en rutas
+
+def extract_predictions(result):
+    """Extrae predicciones del resultado, sin importar la estructura anidada"""
+    if "predictions" in result:
+        if isinstance(result["predictions"], list):
+            if all(isinstance(p, dict) and "x" in p and "y" in p for p in result["predictions"]):
+                return result["predictions"]
+            for item in result["predictions"]:
+                if isinstance(item, dict) and "predictions" in item:
+                    if isinstance(item["predictions"], dict) and "predictions" in item["predictions"]:
+                        return item["predictions"]["predictions"]
+                    elif isinstance(item["predictions"], list):
+                        return item["predictions"]
+    if "result" in result:
+        return extract_predictions(result["result"])
+    return find_predictions_recursively(result)
+
+def find_predictions_recursively(data, max_depth=5, current_depth=0):
+    """Búsqueda recursiva de predicciones en estructuras anidadas"""
+    if current_depth > max_depth:
+        return []
+    if isinstance(data, dict):
+        if "predictions" in data:
+            preds = data["predictions"]
+            if isinstance(preds, list) and all("x" in p and "y" in p for p in preds):
+                return preds
+            elif isinstance(preds, dict) and "predictions" in preds:
+                return preds["predictions"]
+        for value in data.values():
+            result = find_predictions_recursively(value, max_depth, current_depth + 1)
+            if result:
+                return result
+    elif isinstance(data, list):
+        for item in data:
+            result = find_predictions_recursively(item, max_depth, current_depth + 1)
+            if result:
+                return result
+    return []
 
 try:
-    # Get absolute path for reliable file access
+    # Obtener ruta absoluta de la imagen
     abs_image_path = os.path.abspath(IMAGE_PATH)
-    
-    # Convert image to base64 for API
+
+    # Codificar la imagen a base64
     with open(abs_image_path, "rb") as image_file:
         image_data = base64.b64encode(image_file.read()).decode('utf-8')
-    
-    # Prepare the request payload
+
+    # Crear el payload para la API
     payload = {
         "api_key": API_KEY,
         "inputs": {
@@ -27,102 +67,72 @@ try:
             }
         }
     }
-    
-    # Make API request
+
     url = f"https://serverless.roboflow.com/infer/workflows/{WORKSPACE}/{WORKFLOW_ID}"
     headers = {"Content-Type": "application/json"}
-    
-    print(f"Sending request to {url}...")
+
+    print(f"Enviando solicitud a {url}...")
     response = requests.post(url, headers=headers, json=payload)
-    
-    # Check response
+
     if response.status_code == 200:
         result = response.json()
 
-        # Check response
-        if response.status_code == 200:
-            result = response.json()
-            print(json.dumps(result, indent=2))
-            
-            # Save the JSON result to a file
-            json_output_path = os.path.join(os.path.dirname(abs_image_path), "detection_result.json")
-            with open(json_output_path, 'w') as json_file:
-                json.dump(result, json_file, indent=2)
-            print(f"Saved JSON result to: {json_output_path}")
-            
-            # Process and display results
-            img = Image.open(abs_image_path).convert("RGB")
-            draw = ImageDraw.Draw(img)
-            
-            # Rest of your code remains the same...
-
-        print(json.dumps(result, indent=2))
-        
-        # Process and display results
-        img = Image.open(abs_image_path).convert("RGB")
+        # Cargar imagen en modo RGBA para permitir transparencia
+        img = Image.open(abs_image_path).convert("RGBA")
         draw = ImageDraw.Draw(img)
-        
-        # Get the actual image dimensions
-        img_width, img_height = img.size
-        print(f"Actual image dimensions: {img_width}x{img_height}")
+        font = ImageFont.load_default()  # Fuente básica por compatibilidad
 
-        # Get API-reported image dimensions
+        # Dimensiones reales de la imagen
+        img_width, img_height = img.size
+        print(f"Dimensiones reales: {img_width}x{img_height}")
+
+        # Dimensiones según la API (por si se deben escalar)
         api_img = result.get("predictions", {}).get("image", {})
-        api_width = api_img.get("width", 400)
-        api_height = api_img.get("height", 400)
-        print(f"API-reported dimensions: {api_width}x{api_height}")
-        
-        # Calculate scaling factors
+        api_width = api_img.get("width", img_width)
+        api_height = api_img.get("height", img_height)
+        print(f"Dimensiones API: {api_width}x{api_height}")
+
         scale_x = img_width / api_width
         scale_y = img_height / api_height
-        print(f"Scaling factors: x={scale_x}, y={scale_y}")
 
-                # Check if we have predictions
-        # Original incorrect path
-        # predictions = result.get("predictions", {}).get("predictions", [])
-        
-        # Correct path to access predictions - they are nested inside the first item of the predictions array
-        predictions = result.get("predictions", [])[0].get("predictions", {}).get("predictions", []) if result.get("predictions") else []
-        print(f"Found {len(predictions)} objects")
-        
-        if len(predictions) == 0:
-            print("No objects detected in the image!")
+        # Obtener predicciones
+        predictions = extract_predictions(result)
+        print(f"Objetos detectados: {len(predictions)}")
+
+        if not predictions:
+            print("⚠️ No se detectaron objetos en la imagen.")
         
         for prediction in predictions:
-            # Scale coordinates to match actual image size
+            print("Predicción:", prediction)  # DEBUG
             x = prediction["x"] * scale_x
             y = prediction["y"] * scale_y
             w = prediction["width"] * scale_x
             h = prediction["height"] * scale_y
-            
             label = prediction["class"]
-            conf = prediction["confidence"]
-            
-            print(f"Drawing box for {label} at scaled ({x}, {y}) with size {w}x{h}")
+            conf = prediction.get("confidence", 0.0)
 
-            # Convert to box corners
             x0 = x - w / 2
             y0 = y - h / 2
             x1 = x + w / 2
             y1 = y + h / 2
 
-            # Draw more noticeable borders
-            draw.rectangle([x0, y0, x1, y1], outline="red", width=4)
-            
-            # Draw a semi-transparent background for text
-            text = f"{label} ({conf:.2f})"
-            draw.rectangle([x0, y0-20, x0+100, y0], fill=(255, 0, 0, 128))
-            draw.text((x0, y0-15), text, fill="white")
+            # Dibujar el recuadro
+            draw.rectangle([x0, y0, x1, y1], outline="red", width=3)
 
-        # Save the image with boxes for verification
+            # Dibujar el fondo del texto (sin transparencia en RGBA)
+            draw.rectangle([x0, y0 - 20, x0 + 110, y0], fill=(255, 0, 0, 255))
+            draw.text((x0 + 2, y0 - 18), f"{label} ({conf:.2f})", fill="white", font=font)
+
+        # Guardar la imagen modificada
         output_path = os.path.join(os.path.dirname(abs_image_path), "output_detection.png")
         img.save(output_path)
-        print(f"Saved output image to: {output_path}")
-        
-        # Show the image
-        img.show()
+        print(f"✅ Imagen guardada con recuadros en: {output_path}")
+
+        # Mostrar la imagen convertida a RGB
+        img.convert("RGB").show()
+
     else:
         print(f"❌ Error: {response.status_code} - {response.text}")
-    
+
 except Exception as e:
-    print(f"❌ Error: {e}")
+    print(f"❌ Error general: {e}")
