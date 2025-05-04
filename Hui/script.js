@@ -23,19 +23,77 @@ document.addEventListener('DOMContentLoaded', function() {
     const images = Array.from({ length: 93 }, (_, i) => `${i + 1}.png`); 
     let currentImageIndex = 0;
     let zoomLevel = 1;
+    let isNavigating = false; // Variable para controlar si estamos en transición
+    
+    // Variables para la navegación continua
+    let navigationInterval = null;
+    const navigationSpeed = 150; // Velocidad de cambio de imágenes en milisegundos
 
-    // Cambiar imagen al hacer clic en las flechas
-    prevBtn.addEventListener('click', function() {
-        // Cambiar a la imagen anterior (girar a la izquierda)
-        currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-        simulatorImage.src = img3dFolder + images[currentImageIndex];
-    });
+    // Cargar la imagen inicial
+    simulatorImage.src = img3dFolder + images[currentImageIndex];
 
-    nextBtn.addEventListener('click', function() {
-        // Cambiar a la imagen siguiente (girar a la derecha)
-        currentImageIndex = (currentImageIndex + 1) % images.length;
+    // Función para cambiar imagen con control de navegación
+    function changeImage(direction) {
+        // Si ya estamos navegando, ignorar el clic
+        if (isNavigating) return;
+        
+        // Activar el bloqueo de navegación
+        isNavigating = true;
+        
+        // Añadir clase para efecto visual de transición
+        simulatorImage.classList.add('transitioning');
+        
+        // Calcular el nuevo índice
+        if (direction === 'prev') {
+            currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
+        } else {
+            currentImageIndex = (currentImageIndex + 1) % images.length;
+        }
+        
+        // Actualizar la imagen
         simulatorImage.src = img3dFolder + images[currentImageIndex];
+        
+        // Liberar el bloqueo después de un breve tiempo
+        setTimeout(() => {
+            isNavigating = false;
+            simulatorImage.classList.remove('transitioning');
+        }, 100); // Reducido para permitir cambios más rápidos cuando se mantiene presionado
+    }
+
+    // Función para iniciar la navegación continua
+    function startContinuousNavigation(direction) {
+        // Primero cambiamos la imagen una vez inmediatamente
+        changeImage(direction);
+        
+        // Luego configuramos el intervalo para cambios continuos
+        navigationInterval = setInterval(() => {
+            changeImage(direction);
+        }, navigationSpeed);
+    }
+
+    // Función para detener la navegación continua
+    function stopContinuousNavigation() {
+        if (navigationInterval) {
+            clearInterval(navigationInterval);
+            navigationInterval = null;
+        }
+    }
+
+    // Eventos para navegación continua con el botón anterior
+    prevBtn.addEventListener('mousedown', function() {
+        startContinuousNavigation('prev');
     });
+    
+    prevBtn.addEventListener('mouseup', stopContinuousNavigation);
+    prevBtn.addEventListener('mouseleave', stopContinuousNavigation);
+    
+    // Eventos para navegación continua con el botón siguiente
+    nextBtn.addEventListener('mousedown', function() {
+        startContinuousNavigation('next');
+    });
+    
+    nextBtn.addEventListener('mouseup', stopContinuousNavigation);
+    nextBtn.addEventListener('mouseleave', stopContinuousNavigation);
 
     // Funcionalidad de zoom
     zoomInBtn.addEventListener('click', function() {
@@ -68,6 +126,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 imageData = event.target.result;
                 imageWorkspace.style.display = 'flex';
                 explanationContainer.style.display = 'none';
+                
+                // Ocultar las instrucciones cuando se ha subido la imagen
+                const instructionsEl = document.querySelector('.instructions');
+                if (instructionsEl) {
+                    instructionsEl.style.display = 'none';
+                }
             };
             
             reader.readAsDataURL(e.target.files[0]);

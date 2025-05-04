@@ -255,6 +255,7 @@ footer {
     height: 100%;
     object-fit: contain;
     transition: transform 0.3s ease;
+    will-change: transform; /* Optimiza la performance para cambios frecuentes */
 }
 
 #zoom-controls {
@@ -489,6 +490,11 @@ footer {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
+.arrow-btn:active:after {
+    transform: scale(0.8);
+    transition: transform 0.1s ease;
+}
+
 /* Estilos inspirados en el logo de CUPRA para los botones de zoom */
 .zoom-btn {
     background-color: rgba(0, 0, 0, 0.7);
@@ -594,6 +600,7 @@ footer {
     height: 100%;
     object-fit: contain;
     transition: transform 0.3s ease;
+    will-change: transform; /* Optimiza la performance para cambios frecuentes */
 }
 
 /* Nueva estructura de dos columnas */
@@ -630,7 +637,6 @@ footer {
     flex-direction: column;
     height: 100%;
     min-height: 450px;
-    max-height: calc(100vh - 220px); /* Limitamos la altura máxima para evitar problemas con la barra de entrada */
     overflow: hidden;
     border: 1px solid rgba(181, 101, 29, 0.3);
     position: relative; /* Base para posicionamiento absoluto interno */
@@ -655,12 +661,12 @@ footer {
     flex: 1;
     padding: 15px;
     padding-top: 65px; /* Espacio para el header fijo */
-    padding-bottom: 90px; /* Aumentado para dar más espacio a la barra de entrada */
+    padding-bottom: 70px; /* Espacio para la barra de entrada */
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     gap: 15px;
-    height: calc(100% - 70px); /* Ajustada para evitar desbordamiento */
+    height: 100%; /* Ocupar todo el espacio disponible */
     position: relative; /* Para que el scroll funcione correctamente */
     z-index: 5; /* Por debajo de la barra de entrada y header */
 }
@@ -673,20 +679,6 @@ footer {
     position: relative;
     z-index: 1;
     word-break: break-word; /* Asegura que el texto se rompa adecuadamente */
-    margin-bottom: 8px;
-}
-
-.message.bot {
-    background-color: rgba(35, 35, 35, 0.8);
-    border-left: 3px solid var(--cupra-copper);
-    align-self: flex-start;
-}
-
-.message.user {
-    background-color: rgba(181, 101, 29, 0.3);
-    border-right: 3px solid var(--cupra-copper);
-    align-self: flex-end;
-    text-align: right;
 }
 
 .chat-input-container {
@@ -701,50 +693,6 @@ footer {
     width: 100%;
     z-index: 10;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
-    border-bottom-left-radius: 12px; /* Añadido para mantener el redondeo en las esquinas */
-    border-bottom-right-radius: 12px; /* Añadido para mantener el redondeo en las esquinas */
-}
-
-#chat-input {
-    flex-grow: 1;
-    background-color: rgba(45, 45, 45, 0.8);
-    border: 1px solid rgba(181, 101, 29, 0.5);
-    border-radius: 20px;
-    color: #fff;
-    padding: 10px 15px;
-    font-size: 0.95rem;
-    outline: none;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-#chat-input:focus {
-    border-color: var(--cupra-copper);
-    box-shadow: 0 0 0 2px rgba(181, 101, 29, 0.25);
-}
-
-#chat-submit {
-    background-color: var(--cupra-copper);
-    color: white;
-    border: none;
-    width: 40px;
-    height: 40px;
-    min-width: 40px;
-    border-radius: 50%;
-    margin-left: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s ease;
-}
-
-#chat-submit:hover {
-    background-color: #cc7427;
-    transform: scale(1.05);
-}
-
-#chat-submit:active {
-    transform: scale(0.95);
 }
 
 /* Eliminar estilos de quick-actions ya que se removerá este elemento */
@@ -805,4 +753,9 @@ footer {
     .message {
         max-width: 90%; /* Los mensajes pueden ser un poco más anchos en móviles */
     }
+}
+
+/* Mejorar la respuesta visual para navegación continua */
+.transitioning {
+    transition: opacity 0.1s ease;
 }
