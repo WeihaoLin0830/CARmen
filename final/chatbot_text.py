@@ -50,10 +50,10 @@ class PdfChatbot:
     def initialize_chat_session(self):
         """Create a new chat session with the model and initialize it with system prompt"""
         system_prompt = (
-            "You are a helpful assistant specialized in answering questions about a cupra Tavascan manual. "
+            "You are a helpful assistant specialized in answering questions about a cupra Tavascan manual concisely. "
             "Base your answers on the provided document context. "
             "If you know the answer, respond with it. "
-            "If the context doesn't contain enough information to answer, say you don't have enough information. "
+            "Respond with a maximum of 6 sentences. "
             "Always cite the page numbers from the context you used. "
             "Try to be concise and avoid unnecessary details. "
             "You must answer in a json format in the style '{'answer': '...', 'page_numbers': [1, 2, 3], figure_numbers: [1, 2, 3]}' "
