@@ -1,0 +1,765 @@
+:root {
+    --cupra-copper: #b5651d;
+    --cupra-dark: #232323;
+    --cupra-light: #f5f5f5;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', Arial, sans-serif;
+}
+
+body {
+    background: #000; /* Color de respaldo si el video no se carga */
+    color: var(--cupra-light);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    background-color: #000;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.logo {
+    height: 40px;
+}
+
+.copper-text {
+    color: var(--cupra-copper);
+}
+
+main {
+    flex: 1;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.container {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+h1 strong {
+    font-weight: 600;
+}
+
+.upload-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+.upload-btn {
+    background-color: var(--cupra-copper);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    margin-bottom: 1.5rem;
+}
+
+.upload-btn:hover {
+    background-color: #cc7427;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(181, 101, 29, 0.3);
+}
+
+#image-workspace {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.image-container {
+    position: relative;
+    max-width: 100%;
+    border: 2px solid var(--cupra-copper);
+    background-color: #333;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+#uploaded-image {
+    display: block;
+    max-width: 100%;
+    max-height: 600px;
+}
+
+.selection-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+}
+
+.selection-box {
+    position: absolute;
+    border: 2px dashed var(--cupra-copper);
+    background-color: rgba(181, 101, 29, 0.2);
+    pointer-events: none;
+    display: none;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.action-btn {
+    background-color: var(--cupra-dark);
+    color: white;
+    border: 1px solid var(--cupra-copper);
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    background-color: var(--cupra-copper);
+}
+
+.explanation-container {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-left: 4px solid var(--cupra-copper);
+    margin-top: 2rem;
+    display: none;
+}
+
+.explanation-title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: var(--cupra-copper);
+}
+
+.explanation-content {
+    line-height: 1.6;
+}
+
+.selected-area {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.selected-image {
+    border: 1px solid var(--cupra-copper);
+    max-width: 150px;
+    max-height: 150px;
+}
+
+footer {
+    background-color: #000;
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.loading {
+    display: none;
+    margin: 1rem 0;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(181, 101, 29, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--cupra-copper);
+    animation: spin 1s ease-in-out infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.instructions {
+    background-color: rgba(0, 0, 0, 0.4); /* Igual que .container */
+    border-radius: 8px; /* Igual que .container */
+    padding: 2rem; /* Igual que .container */
+    margin-bottom: 2rem; /* Igual que .container */
+    line-height: 1.6; /* Mantén el line-height para el texto */
+}
+
+.instructions ol {
+    margin-left: 1.5rem;
+}
+
+.instructions li {
+    margin-bottom: 0.5rem;
+}
+
+#background-video {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; /* Envía el video al fondo */
+    opacity: 0.4; /* Ajusta la opacidad del video */
+}
+
+#image-viewer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+#image-container {
+    position: relative;
+    overflow: hidden;
+    width: 500px;
+    height: 300px;
+}
+
+#simulator-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    will-change: transform; /* Optimiza la performance para cambios frecuentes */
+}
+
+#zoom-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 20px;
+    position: relative;
+}
+
+#zoom-controls:before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background-color: var(--cupra-copper);
+}
+
+#zoom-controls button {
+    margin: 0 5px;
+}
+
+#menu {
+    background-color: transparent; /* Fondo transparente */
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 2rem;
+    z-index: 1; /* Asegúrate de que el menú esté por encima del video */
+}
+
+#menu ul {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+#menu li {
+    display: inline;
+}
+
+#menu a {
+    text-decoration: none;
+    color: var(--cupra-light); /* Asegúrate de que el texto sea legible */
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+#menu a:hover,
+#menu a.active {
+    background-color: var(--cupra-copper); /* Resalta el enlace activo o al pasar el mouse */
+    color: #fff;
+}
+
+.tab-content {
+    display: none; /* Oculta todas las pestañas por defecto */
+}
+
+.tab-content.active {
+    display: block; /* Muestra solo la pestaña activa */
+}
+
+#simulator-selection-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    cursor: crosshair;
+}
+
+#simulator-selection-box {
+    position: absolute;
+    border: 2px dashed var(--cupra-copper);
+    background-color: rgba(181, 101, 29, 0.2);
+    pointer-events: none;
+    display: none;
+}
+
+#simulator-explanation-container {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-left: 4px solid var(--cupra-copper);
+    margin-top: 2rem;
+    display: none;
+}
+
+#signup {
+    display: flex;
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    height: 100vh; /* Ocupa toda la altura de la ventana */
+    width: 100vw; /* Asegura que ocupe todo el ancho de la ventana */
+    background: rgba(0, 0, 0, 0.6); /* Fondo semitransparente */
+    color: var(--cupra-light);
+    text-align: center;
+    position: relative; /* Asegura que el contenedor esté posicionado correctamente */
+}
+
+.signup-container {
+    background-color: rgba(0, 0, 0, 0.8); /* Fondo oscuro */
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    max-width: 400px;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.signup-container h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.signup-container p {
+    margin-bottom: 2rem;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.signup-container .form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.signup-container label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
+.signup-container input,
+.signup-container select {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid var(--cupra-copper);
+    border-radius: 4px;
+    background-color: #232323;
+    color: var(--cupra-light);
+}
+
+.signup-container .action-btn {
+    background-color: var(--cupra-copper);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    width: 100%;
+}
+
+.signup-container .action-btn:hover {
+    background-color: #a14e17;
+}
+
+.hidden {
+    display: none !important; /* Oculta completamente el elemento */
+}
+
+/* Estilos inspirados en el logo de CUPRA para las flechas de navegación */
+.arrow-btn {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: var(--cupra-copper);
+    border: none;
+    border-radius: 0;
+    width: 60px;
+    height: 60px;
+    font-size: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    margin: 0 20px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+    clip-path: polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%);
+}
+
+.arrow-btn:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(181, 101, 29, 0.2), transparent);
+    transition: 0.5s;
+}
+
+.arrow-btn:after {
+    position: absolute;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--cupra-copper);
+}
+
+#prev-btn:after {
+    content: "◄";
+}
+
+#next-btn:after {
+    content: "►";
+}
+
+.arrow-btn:hover:before {
+    left: 100%;
+}
+
+.arrow-btn:hover {
+    background-color: var(--cupra-copper);
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(181, 101, 29, 0.4);
+}
+
+.arrow-btn:hover:after {
+    color: #fff;
+}
+
+.arrow-btn:active {
+    transform: scale(0.95);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.arrow-btn:active:after {
+    transform: scale(0.8);
+    transition: transform 0.1s ease;
+}
+
+/* Estilos inspirados en el logo de CUPRA para los botones de zoom */
+.zoom-btn {
+    background-color: rgba(0, 0, 0, 0.7);
+    color: var(--cupra-copper);
+    border: none;
+    padding: 12px 25px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    margin: 0 8px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    clip-path: polygon(10% 0, 90% 0, 100% 50%, 90% 100%, 10% 100%, 0 50%);
+}
+
+.zoom-btn:before {
+    content: '';
+    font-weight: bold;
+    margin-right: 8px;
+    font-size: 1.2rem;
+    vertical-align: middle;
+}
+
+.zoom-btn:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(181, 101, 29, 0.2), transparent);
+    transition: 0.5s;
+}
+
+#zoom-in-btn:before {
+    content: "+";
+}
+
+#zoom-out-btn:before {
+    content: "-";
+}
+
+.zoom-btn:hover:after {
+    left: 100%;
+}
+
+.zoom-btn:hover {
+    background-color: var(--cupra-copper);
+    color: #fff;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(181, 101, 29, 0.3);
+}
+
+.zoom-btn:active {
+    transform: translateY(1px);
+}
+
+/* Contenedor de zoom con estilo CUPRA */
+#zoom-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 20px;
+    position: relative;
+}
+
+#zoom-controls:before {
+    content: '';
+    position: absolute;
+    top: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 3px;
+    background-color: var(--cupra-copper);
+}
+
+/* Simulador mejorado */
+#simulator-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin: 30px auto;
+    max-width: 900px;
+}
+
+#simulator-frame {
+    position: relative;
+    width: 700px;
+    height: 450px;
+    overflow: hidden;
+    border: none;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+    background-color: #0a0a0a;
+}
+
+#simulator-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    will-change: transform; /* Optimiza la performance para cambios frecuentes */
+}
+
+/* Nueva estructura de dos columnas */
+.two-column-layout {
+    display: flex;
+    gap: 20px;
+    width: 100%;
+    height: calc(100vh - 180px); /* Ajustado para tener en cuenta encabezado y footer */
+    max-height: calc(100vh - 180px);
+    overflow: hidden; /* Prevenir scroll del contenedor */
+}
+
+.left-column {
+    flex: 0 0 350px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    overflow: hidden; /* Prevenir scroll horizontal */
+    height: 100%; /* Asegurar que ocupe toda la altura disponible */
+}
+
+.right-column {
+    flex: 1;
+    overflow-y: auto; /* Permitir scroll solo dentro del contenido derecho */
+    padding-right: 5px; /* Pequeño padding para el scrollbar */
+}
+
+/* Estilos para el chat */
+#chat-container {
+    background-color: rgba(0, 0, 0, 0.6);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 450px;
+    overflow: hidden;
+    border: 1px solid rgba(181, 101, 29, 0.3);
+    position: relative; /* Base para posicionamiento absoluto interno */
+}
+
+.chat-header {
+    background-color: rgba(181, 101, 29, 0.8);
+    padding: 15px;
+    color: #fff;
+    text-align: center;
+    position: absolute; /* Posición fija respecto al contenedor */
+    top: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 20; /* Mayor que otros elementos para asegurar que esté siempre visible */
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.chat-messages {
+    flex: 1;
+    padding: 15px;
+    padding-top: 65px; /* Espacio para el header fijo */
+    padding-bottom: 70px; /* Espacio para la barra de entrada */
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 100%; /* Ocupar todo el espacio disponible */
+    position: relative; /* Para que el scroll funcione correctamente */
+    z-index: 5; /* Por debajo de la barra de entrada y header */
+}
+
+.message {
+    max-width: 80%;
+    padding: 10px 15px;
+    border-radius: 12px;
+    animation: fadeIn 0.3s ease;
+    position: relative;
+    z-index: 1;
+    word-break: break-word; /* Asegura que el texto se rompa adecuadamente */
+}
+
+.chat-input-container {
+    display: flex;
+    padding: 12px 15px;
+    background-color: rgba(35, 35, 35, 0.9);
+    border-top: 1px solid var(--cupra-copper);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    z-index: 10;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Eliminar estilos de quick-actions ya que se removerá este elemento */
+.quick-actions {
+    display: none;
+}
+
+/* Animación para los mensajes */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Ajustes responsivos para el diseño de dos columnas */
+@media (max-width: 992px) {
+    .two-column-layout {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .left-column {
+        flex: none;
+        width: 100%;
+    }
+
+    .right-column {
+        flex: none;
+        width: 100%;
+    }
+
+    #chat-container {
+        height: 400px;
+        min-height: auto;
+    }
+
+    .chat-input-container {
+        padding: 10px;
+    }
+
+    #chat-input {
+        font-size: 0.85rem;
+        padding: 8px 12px;
+    }
+
+    #chat-submit {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+    }
+}
+
+/* Estilos específicos para dispositivos móviles pequeños */
+@media (max-width: 576px) {
+    .chat-messages {
+        padding-bottom: 60px; /* Menor espacio para la barra en móviles */
+    }
+
+    .message {
+        max-width: 90%; /* Los mensajes pueden ser un poco más anchos en móviles */
+    }
+}
+
+/* Mejorar la respuesta visual para navegación continua */
+.transitioning {
+    transition: opacity 0.1s ease;
+}
