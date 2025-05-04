@@ -210,6 +210,80 @@ document.addEventListener('DOMContentLoaded', function() {
         const adjustedBoxTop = boxTop * scaleY;
         const adjustedBoxWidth = boxWidth * scaleX;
         const adjustedBoxHeight = boxHeight * scaleY;
+
+        const x0 = adjustedBoxLeft;
+        const y0 = adjustedBoxTop;
+        const x1 = adjustedBoxLeft + adjustedBoxWidth;
+        const y1 = adjustedBoxTop + adjustedBoxHeight;
+
+        fetch(`http://localhost:5000/image`, {
+            method: 'POST',
+            headers: {
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+            image_path: `${currentImageIndex}.png`,
+            box: [x0, y0, x1, y1]
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            
+            console.log(`${currentImageIndex}.png`);
+            console.log(data);
+            // Mostrar respuesta del bot
+            const { answer, pages = [], figure_numbers = [], image_paths = [] } = data;
+            console.log('Answer:', answer);
+            console.log('Pages:', pages);
+            console.log('Figure Numbers:', figure_numbers);
+            console.log('Image Paths:', image_paths);
+
+            if (pages.length === 0) {
+            console.warn('No pages found in the response.');
+            }
+
+            if (image_paths.length === 0) {
+            console.warn('No image paths found in the response.');
+            }
+
+            // Mostrar las imágenes debajo del chat
+            const chatContainer = document.getElementById('chat-container');
+            const imagesContainer = document.createElement('div');
+            imagesContainer.className = 'chat-images-container';
+
+            if (Array.isArray(image_paths)) {
+            image_paths.forEach(path => {
+                const img = document.createElement('img');
+                img.src = `../extracted_content_manual/images/${path}`;
+                img.alt = 'Imagen relacionada';
+                img.className = 'chat-image';
+                img.style.height = '100px'; // Ajustar el ancho de 
+                // la imagen
+                img.style.borderRadius = '8px'; // Bordes redondeados
+                img.style.marginRight = '8px'; // Espacio entre imágenes
+                img.style.width = 'auto'; // Mantener la proporción
+                imagesContainer.appendChild(img);
+            });
+            } else {
+            console.error('Error: "paths" is not an array or is undefined.');
+            }
+
+            // Añadir el contenedor de imágenes al final del chat
+            const messagesContainer = document.querySelector('.chat-messages');
+            messagesContainer.appendChild(imagesContainer);
+
+            // Añadir la respuesta del bot al chat
+            addMessage(answer);
+
+            // Asegurarse de que el scroll esté al final para mostrar el contenido más reciente
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al analizar la imagen: ' + error.message);
+        });
+
+
         console.log(`Coordenadas ajustadas: ${adjustedBoxLeft}, ${adjustedBoxTop}, ${adjustedBoxWidth}, ${adjustedBoxHeight}`);
         
         // Mostrar indicador de carga
@@ -410,53 +484,86 @@ document.addEventListener('DOMContentLoaded', function() {
         // Mostrar indicador de carga
         simulatorLoading.style.display = 'block';
         
-        // Crear un canvas temporal para el recorte
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        
-        // Establecer dimensiones del canvas al tamaño del recorte
-        canvas.width = boxWidth;
-        canvas.height = boxHeight;
-        
-        // Crear una imagen para el recorte
-        const img = new Image();
-        img.crossOrigin = 'anonymous';
-        
-        img.onload = function() {
-            // Dibujar solo la parte seleccionada de la imagen en el canvas
-            ctx.drawImage(
-                img,
-                boxLeft, boxTop, // Coordenadas de inicio en la imagen original
-                boxWidth, boxHeight, // Tamaño del área a recortar
-                0, 0, // Coordenadas de destino en el canvas
-                boxWidth, boxHeight // Tamaño en el canvas
-            );
-            
-            // Convertir el canvas a una URL de datos
-            const croppedImageUrl = canvas.toDataURL('image/png');
-            
-            // Actualizar la imagen recortada
-            simulatorCroppedImage.src = croppedImageUrl;
-            
-            // Ocultar indicador de carga
-            simulatorLoading.style.display = 'none';
-            
-            // Mostrar contenedor de explicación
-            simulatorExplanationContainer.style.display = 'block';
-            
-            // Mostrar información del componente basada en la posición
-            simulatorExplanationContent.innerHTML = `
-                <p><strong>Componente detectado:</strong> ${getComponentName(boxLeft, boxTop)}</p>
-                <p>Esta es la información sobre la parte seleccionada del Cupra Tavascan en la simulación 3D.</p>
-                <p>Este componente es crucial para el funcionamiento óptimo del vehículo.</p>
-                <p>Para más detalles, consulta la sección correspondiente en el manual del propietario o pregunta al asistente virtual.</p>
-            `;
-        };
-        
-        // Cargar la imagen actual del simulador
-        img.src = simulatorImage.src;
-    });
+        // Ajustar las coordenadas según la escala del simulador
+    const scaleX = simulatorImage.naturalWidth / simulatorImage.clientWidth;
+    const scaleY = simulatorImage.naturalHeight / simulatorImage.clientHeight;
 
+    const x0 = boxLeft * scaleX;
+    const y0 = boxTop * scaleY;
+    const x1 = x0 + boxWidth * scaleX;
+    const y1 = y0 + boxHeight * scaleY;
+
+    // Realizar el fetch
+    fetch(`http://localhost:5000/image`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            image_path: `${currentImageIndex}.png`,
+            box: [x0, y0, x1, y1]
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(`${currentImageIndex}.png`);
+        console.log(data);
+
+        // Mostrar respuesta del bot
+        const { answer, pages = [], figure_numbers = [], image_paths = [] } = data;
+        console.log('Answer:', answer);
+        console.log('Pages:', pages);
+        console.log('Figure Numbers:', figure_numbers);
+        console.log('Image Paths:', image_paths);
+
+        if (pages.length === 0) {
+            console.warn('No pages found in the response.');
+        }
+
+        if (image_paths.length === 0) {
+            console.warn('No image paths found in the response.');
+        }
+
+        // Mostrar las imágenes debajo del chat
+        const chatContainer = document.getElementById('chat-container');
+        const imagesContainer = document.createElement('div');
+        imagesContainer.className = 'chat-images-container';
+
+        if (Array.isArray(image_paths)) {
+            image_paths.forEach(path => {
+                const img = document.createElement('img');
+                img.src = `../extracted_content_manual/images/${path}`;
+                img.alt = 'Imagen relacionada';
+                img.className = 'chat-image';
+                img.style.height = '100px';
+                img.style.borderRadius = '8px';
+                img.style.marginRight = '8px';
+                img.style.width = 'auto';
+                imagesContainer.appendChild(img);
+            });
+        } else {
+            console.error('Error: "paths" is not an array or is undefined.');
+        }
+        addMessage(answer);
+        // Añadir el contenedor de imágenes al final del chat
+        const messagesContainer = document.querySelector('.chat-messages');
+        messagesContainer.appendChild(imagesContainer);
+
+        // Añadir la respuesta del bot al chat
+        
+
+        // Asegurarse de que el scroll esté al final para mostrar el contenido más reciente
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al analizar la imagen: ' + error.message);
+    })
+    .finally(() => {
+        // Ocultar indicador de carga
+        simulatorLoading.style.display = 'none';
+    });
+});
     // Función para determinar qué componente se ha seleccionado (simulación)
     function getComponentName(x, y) {
         // Esta función simula la detección de componentes basada en coordenadas
@@ -573,13 +680,13 @@ document.addEventListener('DOMContentLoaded', function() {
         messagesContainer.appendChild(typingIndicator);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
         
-        // Simular llamada a la API (reemplazar con llamada real a la API)
-        fetch('http://localhost:8000/api/chat', {
+        // Simular llamada a la API (reemplazar con llamada real a la API)fetch(`${API_URL}/chat`
+        fetch('http://localhost:5000/chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ message: userMessage })
+            body: JSON.stringify({ query: userMessage })
         })
         .then(response => {
             // Eliminar indicador de escritura
@@ -591,8 +698,55 @@ document.addEventListener('DOMContentLoaded', function() {
             return response.json();
         })
         .then(data => {
+            console.log(data);
             // Mostrar respuesta del bot
-            addMessage(data.response);
+            const { answer, pages = [], figure_numbers = [], image_paths = [] } = data;
+
+            // Log the data to verify its contents
+            console.log('Pages:', pages);
+            console.log('Image Paths:', image_paths);
+
+            // Ensure the data is properly handled even if arrays are empty
+            if (pages.length === 0) {
+                console.warn('No pages found in the response.');
+            }
+
+            if (image_paths.length === 0) {
+                console.warn('No image paths found in the response.');
+            }
+            // Mostrar las imágenes debajo del chat
+            const chatContainer = document.getElementById('chat-container');
+            const imagesContainer = document.createElement('div');
+            imagesContainer.className = 'chat-images-container';
+
+            if (Array.isArray(image_paths)) {
+                image_paths.forEach(path => {
+                    const img = document.createElement('img');
+                    img.src = `../extracted_content_manual/images/${path}`;
+                    img.alt = 'Imagen relacionada';
+                    img.className = 'chat-image';
+                    img.style.height = '100px'; // Ajustar el ancho de 
+                    // la imagen
+                    img.style.borderRadius = '8px'; // Bordes redondeados
+                    img.style.marginRight = '8px'; // Espacio entre imágenes
+                    img.style.width = 'auto'; // Mantener la proporción
+                    imagesContainer.appendChild(img);
+                });
+            } else {
+                console.error('Error: "paths" is not an array or is undefined.');
+            }
+
+            // Añadir el contenedor de imágenes al final del chat
+            
+            // Añadir la respuesta del bot al chat
+            addMessage(answer);
+
+            // Añadir las imágenes relacionadas justo después de la respuesta del bot
+            const messagesContainer = document.querySelector('.chat-messages');
+            messagesContainer.appendChild(imagesContainer);
+
+            // Asegurarse de que el scroll esté al final para mostrar el contenido más reciente
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
         })
         .catch(error => {
             // Eliminar indicador de escritura

@@ -61,11 +61,11 @@ def get_image_paths(image_ids):
     image_dir = os.path.join(content_dir, "images")
     image_paths = []
 
-    all_images = sorted(os.listdir(image_dir))
+    all_images = os.listdir(image_dir)
     result = []
 
     for i in image_ids:
-        result.append(all_images[i-1])
+        result.append(all_images[i+4])
         
     return result
 
@@ -83,7 +83,15 @@ def main(query):
         try:
             response_clean = re.sub(r'```json', '', response_text)
             response_clean = re.sub(r'```', '', response_clean)
+
             response = json.loads(response_clean)
+
+            if "figure_numbers" in response:
+                image_ids = response["figure_numbers"]
+                image_paths = get_image_paths(image_ids)
+                response["image_paths"] = image_paths[:2]
+
+            return response
 
         except json.JSONDecodeError:
             # Return a fallback JSON if parsing fails
@@ -174,7 +182,7 @@ def image(image_path, box_coordinates):
         if "figure_numbers" in json_response:
             image_ids = json_response["figure_numbers"]
             image_paths = get_image_paths(image_ids)
-            json_response["image_paths"] = image_paths
+            json_response["image_paths"] = image_paths[:2]
             
         return json_response
 
@@ -230,15 +238,16 @@ def image_endpoint():
         print(f"Response from image function: {response}")
 
         # Convert to ensure JSON serialization works
-        json_response = jsonify(response)
+        
         print("JSON response created successfully")
 
         # Retrieve image paths for the top-ranked images
         if "figure_numbers" in response:
             image_ids = response["figure_numbers"]
             image_paths = get_image_paths(image_ids)
-            response["image_paths"] = image_paths
+            response["image_paths"] = image_paths[:2]
 
+        json_response = jsonify(response)
         return json_response
 
     except Exception as e:
