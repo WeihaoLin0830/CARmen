@@ -20,11 +20,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const zoomInBtn = document.getElementById('zoom-in-btn');
     const zoomOutBtn = document.getElementById('zoom-out-btn');
     const img3dFolder = './cupra_frames/';
-    const images = Array.from({ length: 93 }, (_, i) => `${i + 1}.png`); 
+    const images = Array.from({ length: 93 }, (_, i) => `${i + 1}.png`);
     let currentImageIndex = 0;
     let zoomLevel = 1;
     let isNavigating = false; // Variable para controlar si estamos en transición
-    
+
     // Variables para la navegación continua
     let navigationInterval = null;
     const navigationSpeed = 150; // Velocidad de cambio de imágenes en milisegundos
@@ -36,23 +36,23 @@ document.addEventListener('DOMContentLoaded', function() {
     function changeImage(direction) {
         // Si ya estamos navegando, ignorar el clic
         if (isNavigating) return;
-        
+
         // Activar el bloqueo de navegación
         isNavigating = true;
-        
+
         // Añadir clase para efecto visual de transición
         simulatorImage.classList.add('transitioning');
-        
+
         // Calcular el nuevo índice
         if (direction === 'prev') {
             currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
         } else {
             currentImageIndex = (currentImageIndex + 1) % images.length;
         }
-        
+
         // Actualizar la imagen
         simulatorImage.src = img3dFolder + images[currentImageIndex];
-        
+
         // Liberar el bloqueo después de un breve tiempo
         setTimeout(() => {
             isNavigating = false;
@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function startContinuousNavigation(direction) {
         // Primero cambiamos la imagen una vez inmediatamente
         changeImage(direction);
-        
+
         // Luego configuramos el intervalo para cambios continuos
         navigationInterval = setInterval(() => {
             changeImage(direction);
@@ -83,15 +83,15 @@ document.addEventListener('DOMContentLoaded', function() {
     prevBtn.addEventListener('mousedown', function() {
         startContinuousNavigation('prev');
     });
-    
+
     prevBtn.addEventListener('mouseup', stopContinuousNavigation);
     prevBtn.addEventListener('mouseleave', stopContinuousNavigation);
-    
+
     // Eventos para navegación continua con el botón siguiente
     nextBtn.addEventListener('mousedown', function() {
         startContinuousNavigation('next');
     });
-    
+
     nextBtn.addEventListener('mouseup', stopContinuousNavigation);
     nextBtn.addEventListener('mouseleave', stopContinuousNavigation);
 
@@ -105,96 +105,96 @@ document.addEventListener('DOMContentLoaded', function() {
         zoomLevel = Math.max(1, zoomLevel - 0.2);
         simulatorImage.style.transform = `scale(${zoomLevel})`;
     });
-    
+
     // Variables para la selección
     let isSelecting = false;
     let startX, startY, currentX, currentY;
     let imageData = null;
-    
+
     // Evento para abrir el explorador de archivos
     browseBtn.addEventListener('click', function() {
         fileInput.click();
     });
-    
+
     // Cuando se selecciona un archivo
     fileInput.addEventListener('change', function(e) {
         if (e.target.files && e.target.files[0]) {
             const reader = new FileReader();
-            
+
             reader.onload = function(event) {
                 uploadedImage.src = event.target.result;
                 imageData = event.target.result;
                 imageWorkspace.style.display = 'flex';
                 explanationContainer.style.display = 'none';
-                
+
                 // Ocultar las instrucciones cuando se ha subido la imagen
                 const instructionsEl = document.querySelector('.instructions');
                 if (instructionsEl) {
                     instructionsEl.style.display = 'none';
                 }
             };
-            
+
             reader.readAsDataURL(e.target.files[0]);
         }
     });
-    
+
     // Eventos para la selección con el mouse
     selectionOverlay.addEventListener('mousedown', function(e) {
         isSelecting = true;
-        
+
         // Calcula la posición relativa al elemento de la imagen
         const rect = selectionOverlay.getBoundingClientRect();
         startX = e.clientX - rect.left;
         startY = e.clientY - rect.top;
-        
+
         selectionBox.style.display = 'block';
         selectionBox.style.left = startX + 'px';
         selectionBox.style.top = startY + 'px';
         selectionBox.style.width = '0px';
         selectionBox.style.height = '0px';
     });
-    
+
     selectionOverlay.addEventListener('mousemove', function(e) {
         if (!isSelecting) return;
-        
+
         // Calcula la posición relativa al elemento de la imagen
         const rect = selectionOverlay.getBoundingClientRect();
         currentX = e.clientX - rect.left;
         currentY = e.clientY - rect.top;
-        
+
         // Calcular dimensiones y posición del recuadro
         const width = Math.abs(currentX - startX);
         const height = Math.abs(currentY - startY);
         const left = Math.min(startX, currentX);
         const top = Math.min(startY, currentY);
-        
+
         selectionBox.style.width = width + 'px';
         selectionBox.style.height = height + 'px';
         selectionBox.style.left = left + 'px';
         selectionBox.style.top = top + 'px';
     });
-    
+
     // Finalizar selección cuando se suelta el mouse
     document.addEventListener('mouseup', function() {
         if (isSelecting) {
             isSelecting = false;
         }
-        
+
     });
-    
+
     // Reiniciar selección
     resetBtn.addEventListener('click', function() {
         selectionBox.style.display = 'none';
         explanationContainer.style.display = 'none';
     });
-    
+
     // Enviar solicitud al backend
     submitBtn.addEventListener('click', function() {
         if (selectionBox.style.display === 'none') {
             alert('Por favor, selecciona una parte de la imagen primero');
             return;
         }
-        
+
         // Obtener coordenadas de selección
         const boxLeft = parseInt(selectionBox.style.left);
         const boxTop = parseInt(selectionBox.style.top);
@@ -211,10 +211,10 @@ document.addEventListener('DOMContentLoaded', function() {
         const adjustedBoxWidth = boxWidth * scaleX;
         const adjustedBoxHeight = boxHeight * scaleY;
         console.log(`Coordenadas ajustadas: ${adjustedBoxLeft}, ${adjustedBoxTop}, ${adjustedBoxWidth}, ${adjustedBoxHeight}`);
-        
+
         // Mostrar indicador de carga
         loading.style.display = 'block';
-        
+
         // Crear un canvas para recortar la imagen
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
@@ -231,18 +231,18 @@ document.addEventListener('DOMContentLoaded', function() {
             // Configurar el canvas con el tamaño de la selección
             canvas.width = boxWidth;
             canvas.height = boxHeight;
-            
+
             // Recortar la imagen
             ctx.drawImage(img, adjustedBoxLeft, adjustedBoxTop, adjustedBoxWidth, adjustedBoxHeight, 0, 0, boxWidth, boxHeight);
-            
+
             // Obtener la imagen recortada como base64
             const croppedImageData = canvas.toDataURL('image/jpeg');
             // Mostrar la imagen recortada
             croppedImage.src = croppedImageData;
-            
+
             // SIMULACIÓN: En una implementación real, aquí se enviaría la solicitud al backend
             // Descomentar y modificar el siguiente bloque para la implementación real
-            
+
             /*
             fetch('TU_URL_DE_BACKEND_AQUI', {
                 method: 'POST',
@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function() {
             .then(data => {
                 // Ocultar indicador de carga
                 loading.style.display = 'none';
-                
+
                 // Mostrar explicación recibida del backend
                 explanationContainer.style.display = 'block';
                 explanationContent.innerHTML = data.explanation || 'No se encontró información para esta parte.';
@@ -275,15 +275,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('Error:', error);
             });
             */
-            
+
             // SIMULACIÓN: Para demostración, usamos un timeout para simular respuesta del backend
             setTimeout(function() {
                 // Ocultar indicador de carga
                 loading.style.display = 'none';
-                
+
                 // Mostrar explicación
                 explanationContainer.style.display = 'block';
-                
+
                 // Simular una respuesta del backend
                 explanationContent.innerHTML = `
                     <p>Esta es la información sobre la parte seleccionada del Cupra Tavascan.</p>
@@ -292,7 +292,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 `;
             }, 1500);
         };
-        
+
         img.src = imageData;
     });
 
@@ -335,12 +335,12 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mejorar la estabilidad del recuadro de selección en el simulador
     simulatorSelectionOverlay.addEventListener('mousedown', function (e) {
         isSelecting = true;
-        
+
         // Usar el mismo enfoque que en la selección de la imagen subida
         const rect = simulatorSelectionOverlay.getBoundingClientRect();
         startX = e.clientX - rect.left;
         startY = e.clientY - rect.top;
-        
+
         simulatorSelectionBox.style.display = 'block';
         simulatorSelectionBox.style.left = startX + 'px';
         simulatorSelectionBox.style.top = startY + 'px';
@@ -350,18 +350,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     simulatorSelectionOverlay.addEventListener('mousemove', function (e) {
         if (!isSelecting) return;
-        
+
         // Usar el mismo enfoque que en la selección de la imagen subida
         const rect = simulatorSelectionOverlay.getBoundingClientRect();
         const currentX = e.clientX - rect.left;
         const currentY = e.clientY - rect.top;
-        
+
         // Calcular dimensiones y posición del recuadro
         const width = Math.abs(currentX - startX);
         const height = Math.abs(currentY - startY);
         const left = Math.min(startX, currentX);
         const top = Math.min(startY, currentY);
-        
+
         simulatorSelectionBox.style.width = width + 'px';
         simulatorSelectionBox.style.height = height + 'px';
         simulatorSelectionBox.style.left = left + 'px';
@@ -372,11 +372,11 @@ document.addEventListener('DOMContentLoaded', function() {
     document.addEventListener('mouseup', function () {
         if (isSelecting) {
             isSelecting = false;
-            
+
             // Validar tamaño mínimo para evitar selecciones accidentales
             const boxWidth = parseInt(simulatorSelectionBox.style.width);
             const boxHeight = parseInt(simulatorSelectionBox.style.height);
-            
+
             if (boxWidth < 5 || boxHeight < 5) {
                 simulatorSelectionBox.style.display = 'none'; // Ocultar si es muy pequeño
             }
@@ -394,34 +394,34 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Por favor, selecciona una parte de la imagen primero');
             return;
         }
-        
+
         // Obtener las dimensiones y posición de la selección
         const boxWidth = parseInt(simulatorSelectionBox.style.width);
         const boxHeight = parseInt(simulatorSelectionBox.style.height);
         const boxLeft = parseInt(simulatorSelectionBox.style.left);
         const boxTop = parseInt(simulatorSelectionBox.style.top);
-        
+
         // Verificar que la selección tenga un tamaño mínimo
         if (boxWidth < 10 || boxHeight < 10) {
             alert('Por favor, haz una selección más grande');
             return;
         }
-        
+
         // Mostrar indicador de carga
         simulatorLoading.style.display = 'block';
-        
+
         // Crear un canvas temporal para el recorte
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
-        
+
         // Establecer dimensiones del canvas al tamaño del recorte
         canvas.width = boxWidth;
         canvas.height = boxHeight;
-        
+
         // Crear una imagen para el recorte
         const img = new Image();
         img.crossOrigin = 'anonymous';
-        
+
         img.onload = function() {
             // Dibujar solo la parte seleccionada de la imagen en el canvas
             ctx.drawImage(
@@ -431,19 +431,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 0, 0, // Coordenadas de destino en el canvas
                 boxWidth, boxHeight // Tamaño en el canvas
             );
-            
+
             // Convertir el canvas a una URL de datos
             const croppedImageUrl = canvas.toDataURL('image/png');
-            
+
             // Actualizar la imagen recortada
             simulatorCroppedImage.src = croppedImageUrl;
-            
+
             // Ocultar indicador de carga
             simulatorLoading.style.display = 'none';
-            
+
             // Mostrar contenedor de explicación
             simulatorExplanationContainer.style.display = 'block';
-            
+
             // Mostrar información del componente basada en la posición
             simulatorExplanationContent.innerHTML = `
                 <p><strong>Componente detectado:</strong> ${getComponentName(boxLeft, boxTop)}</p>
@@ -452,7 +452,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 <p>Para más detalles, consulta la sección correspondiente en el manual del propietario o pregunta al asistente virtual.</p>
             `;
         };
-        
+
         // Cargar la imagen actual del simulador
         img.src = simulatorImage.src;
     });
@@ -461,7 +461,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function getComponentName(x, y) {
         // Esta función simula la detección de componentes basada en coordenadas
         // En una implementación real, esto podría conectarse a una API o base de datos
-        
+
         // Zona superior del vehículo
         if (y < 100) {
             return "Techo panorámico";
@@ -530,51 +530,51 @@ document.addEventListener('DOMContentLoaded', function() {
     const chatMessages = document.getElementById('chat-messages');
     const chatInput = document.getElementById('chat-input');
     const chatSubmitBtn = document.getElementById('chat-submit');
-    
+
     // Función para añadir un nuevo mensaje al chat
     function addMessage(message, isUser = false) {
         const messageEl = document.createElement('div');
         messageEl.className = `message ${isUser ? 'user' : 'bot'}`;
-        
+
         const messageContent = document.createElement('div');
         messageContent.className = 'message-content';
-        
+
         const messagePara = document.createElement('p');
         messagePara.textContent = message;
-        
+
         messageContent.appendChild(messagePara);
         messageEl.appendChild(messageContent);
-        
+
         // Encontrar el contenedor de mensajes y añadir el mensaje
         const messagesContainer = document.querySelector('.chat-messages');
         messagesContainer.appendChild(messageEl);
-        
+
         // Auto-scroll hacia abajo para mostrar el mensaje más reciente
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        
+
         return messageEl;
     }
-    
+
     // Función para enviar un mensaje al chatbot y mostrar la respuesta
     function sendToChatbot(userMessage) {
         // Añadir mensaje de usuario al chat
         addMessage(userMessage, true);
-        
+
         // Limpiar el input después de enviar
         chatInput.value = '';
-        
+
         // Mostrar indicador de escritura
         const typingIndicator = document.createElement('div');
         typingIndicator.className = 'message bot typing';
         typingIndicator.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
-        
+
         // Añadir el indicador de escritura al contenedor de mensajes
         const messagesContainer = document.querySelector('.chat-messages');
         messagesContainer.appendChild(typingIndicator);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        
+
         // Simular llamada a la API (reemplazar con llamada real a la API)
-        fetch('http://localhost:8000/api/chat', {
+        fetch('http://localhost:5000/api/chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -584,7 +584,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => {
             // Eliminar indicador de escritura
             messagesContainer.removeChild(typingIndicator);
-            
+
             if (!response.ok) {
                 throw new Error('Error en la comunicación con el chatbot');
             }
@@ -599,17 +599,17 @@ document.addEventListener('DOMContentLoaded', function() {
             if (typingIndicator.parentNode) {
                 messagesContainer.removeChild(typingIndicator);
             }
-            
+
             // Mostrar mensaje de error
             const errorMsg = 'Lo siento, ha ocurrido un error. Por favor, inténtalo de nuevo más tarde.';
             addMessage(errorMsg);
             console.error('Error:', error);
-            
+
             // Usar una función de respaldo para simular respuestas
             handleChatbotFallback(userMessage);
         });
     }
-    
+
     // Event listeners para entrada de chat
     chatSubmitBtn.addEventListener('click', function() {
         const message = chatInput.value.trim();
@@ -618,7 +618,7 @@ document.addEventListener('DOMContentLoaded', function() {
             chatInput.value = '';
         }
     });
-    
+
     chatInput.addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             const message = chatInput.value.trim();
@@ -628,7 +628,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
+
     // Función de respaldo para cuando falla la llamada a la API (para fines de demostración)
     function handleChatbotFallback(userMessage) {
         // Mapeo simple de respuestas para demo
@@ -639,18 +639,18 @@ document.addEventListener('DOMContentLoaded', function() {
             'funciones del volante': 'El volante multifunción del CUPRA Tavascan integra controles para infoentretenimiento, asistentes de conducción y selección de modos de conducción. El botón CUPRA permite cambiar rápidamente entre los modos predefinidos.',
             'modos de conducción': 'El CUPRA Tavascan ofrece varios modos de conducción: Comfort, Sport, CUPRA e Individual. Cada uno modifica parámetros como la respuesta del acelerador, dirección y suspensión adaptativa.'
         };
-        
+
         // Buscar palabras clave en el mensaje del usuario
         let botResponse = 'Lo siento, no tengo información específica sobre eso. ¿Puedo ayudarte con algo más sobre tu CUPRA Tavascan?';
-        
+
         const lowerMessage = userMessage.toLowerCase();
-        
+
         Object.keys(responses).forEach(key => {
             if (lowerMessage.includes(key)) {
                 botResponse = responses[key];
             }
         });
-        
+
         // Añadir respuesta del bot al chat después de un retraso para simular "pensamiento"
         setTimeout(() => {
             addMessage(botResponse);
@@ -663,183 +663,52 @@ document.addEventListener('DOMContentLoaded', function() {
         const chatInput = document.getElementById('chat-input');
         const chatSubmitBtn = document.getElementById('chat-submit');
         const messagesContainer = document.querySelector('.chat-messages');
-        
+
         if (chatContainer && chatInput && chatSubmitBtn) {
             console.log("Chatbox inicializado correctamente");
-            
+
             // Ensure chat container takes full height
             chatContainer.style.display = 'flex';
             chatContainer.style.flexDirection = 'column';
             chatContainer.style.height = '100%';
-            
+
             // Configure the messages container for proper scrolling
             if (messagesContainer) {
                 messagesContainer.style.overflowY = 'auto';
                 messagesContainer.style.flex = '1';
-                
+
                 // Aseguramos que haya suficiente espacio para la barra de entrada
                 const chatInputHeight = document.querySelector('.chat-input-container').offsetHeight;
-                messagesContainer.style.paddingBottom = (chatInputHeight + 10) + 'px';
-                
+                messagesContainer.style.paddingBottom = (chatInputHeight + 20) + 'px';
+
                 // Scroll al último mensaje
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             }
-            
+
             // Focus the input automatically when the page loads
             setTimeout(() => {
                 chatInput.focus();
             }, 500);
-            
+
             // Remove the event that requires clicking on the container first
             // Instead, ensure the input can be focused at any time
             chatInput.addEventListener('click', function(e) {
                 // Stop propagation to prevent other click handlers
                 e.stopPropagation();
             });
-            
+
             // Add welcome message if no messages exist
             if (document.querySelectorAll('.chat-messages .message').length === 0) {
-                addMessage("¡Hola! Soy tu asistente virtual de CUPRA. ¿En qué puedo ayudarte hoy con tu CUPRA Tavascan?", false);
+                addMessage("¡Hola! Soy tu asistente virtual de CUPRA. ¿En qué puedo ayudarte hoy?", false);
             }
-            
-            // Añadir efecto de enfoque automático cuando se hace clic en cualquier parte del contenedor de chat
-            chatContainer.addEventListener('click', function() {
-                if (document.activeElement !== chatInput) {
-                    chatInput.focus();
-                }
-            });
-            
-            // Mejorar el placeholder del input con animación
-            const originalPlaceholder = chatInput.placeholder;
-            let isDefaultPlaceholder = true;
-            
-            // Cambiar el placeholder periódicamente para sugerir preguntas
-            setInterval(() => {
-                if (document.activeElement !== chatInput && chatInput.value === '') {
-                    if (isDefaultPlaceholder) {
-                        const suggestions = [
-                            "¿Cómo funciona la carga rápida?",
-                            "¿Cuándo debo realizar el mantenimiento?",
-                            "¿Cómo configuro los modos de conducción?",
-                            "¿Qué significan las luces del tablero?",
-                            "¿Cómo funciona el sistema de infoentretenimiento?"
-                        ];
-                        chatInput.placeholder = suggestions[Math.floor(Math.random() * suggestions.length)];
-                    } else {
-                        chatInput.placeholder = originalPlaceholder;
-                    }
-                    isDefaultPlaceholder = !isDefaultPlaceholder;
-                }
-            }, 5000);
-            
-            // Restaurar placeholder original al enfocar
-            chatInput.addEventListener('focus', function() {
-                setTimeout(() => {
-                    chatInput.placeholder = originalPlaceholder;
-                    isDefaultPlaceholder = true;
-                }, 100);
-            });
         } else {
             console.error("Faltan elementos del chatbox. Verifica que todos los IDs existan en el HTML.");
         }
     }
 
-    // Optimizar el espacio visual dinámicamente según el tamaño de pantalla
-    function optimizeVisualSpace() {
-        // Comprobar altura de la ventana
-        const windowHeight = window.innerHeight;
-        
-        // Ajustar containers según altura disponible
-        const containers = document.querySelectorAll('.container');
-        containers.forEach(container => {
-            // En pantallas muy pequeñas, reducir más el padding
-            if (windowHeight < 600) {
-                container.style.padding = '1rem';
-            } else if (windowHeight < 800) {
-                container.style.padding = '1.25rem';
-            } else {
-                container.style.padding = '1.5rem';
-            }
-        });
-        
-        // Ajustar visibilidad de las imágenes de áreas seleccionadas
-        const croppedImages = document.querySelectorAll('#cropped-image, #simulator-cropped-image');
-        if (windowHeight < 700) {
-            croppedImages.forEach(img => {
-                img.style.display = 'none';
-            });
-            
-            // Ajustar el layout de la explicación
-            document.querySelectorAll('.selected-area').forEach(area => {
-                area.style.flexDirection = 'column';
-                area.style.gap = '0.5rem';
-            });
-        } else {
-            croppedImages.forEach(img => {
-                img.style.display = 'block';
-            });
-            
-            document.querySelectorAll('.selected-area').forEach(area => {
-                area.style.flexDirection = 'row';
-                area.style.gap = '0.8rem';
-            });
-        }
-        
-        // Ajustar altura máxima de las imágenes según altura de ventana
-        let maxImageHeight = 380; // valor predeterminado
-        
-        if (windowHeight < 600) {
-            maxImageHeight = 280;
-        } else if (windowHeight < 700) {
-            maxImageHeight = 320;
-        } else if (windowHeight < 800) {
-            maxImageHeight = 350;
-        }
-        
-        // Aplicar la altura máxima a los contenedores de imágenes
-        document.querySelectorAll('.image-container, #image-container').forEach(container => {
-            container.style.maxHeight = maxImageHeight + 'px';
-        });
-        
-        document.querySelectorAll('#uploaded-image, #simulator-image').forEach(img => {
-            img.style.maxHeight = maxImageHeight + 'px';
-        });
-    }
-
-    // Ejecutar la optimización al cargar y cuando se redimensione la ventana
-    window.addEventListener('load', optimizeVisualSpace);
-    window.addEventListener('resize', optimizeVisualSpace);
-    
-    // También ejecutar la optimización cuando se cambie de pestaña
-    document.querySelectorAll('.menu-link').forEach(link => {
-        link.addEventListener('click', function() {
-            setTimeout(optimizeVisualSpace, 100);
-        });
-    });
-
-    // Ejecutar optimización al cargar y cuando se redimensione la ventana
-    window.addEventListener('load', optimizeVisualSpace);
-    window.addEventListener('resize', optimizeVisualSpace);
-
-    // También enfocamos el input cuando se cambia a la pestaña correspondiente
-    document.querySelectorAll('.menu-link').forEach(link => {
-        link.addEventListener('click', function() {
-            // Cuando se cambia de pestaña, verificar si debemos enfocar el chat
-            setTimeout(() => {
-                const chatInput = document.getElementById('chat-input');
-                if (chatInput && window.getComputedStyle(chatInput).display !== 'none') {
-                    chatInput.focus();
-                }
-                
-                // Optimizar espacio visual después de cambiar de pestaña
-                optimizeVisualSpace();
-            }, 300);
-        });
-    });
-
     // Inicializar chatbox después de que todo esté cargado
     window.addEventListener('load', initializeChatbox);
-    
+
     // También enfocamos el input cuando se cambia a la pestaña correspondiente
     document.querySelectorAll('.menu-link').forEach(link => {
         link.addEventListener('click', function() {
@@ -853,3 +722,45 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+// Example for text chat
+async function sendChatMessage(message) {
+    try {
+        const response = await fetch('http://localhost:5000/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ query: message })
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error sending chat message:', error);
+        return { error: 'Failed to get response' };
+    }
+}
+
+// Example for image processing
+async function processDashboardImage(imageData, query, boxCoordinates) {
+    try {
+        const response = await fetch('http://localhost:5000/api/process-image', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                image: imageData,
+                query: query,
+                box: boxCoordinates  // [x1, y1, x2, y2]
+            })
+        });
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error processing image:', error);
+        return { error: 'Failed to process image' };
+    }
+}

@@ -900,19 +900,19 @@ footer {
         padding: 1rem;
         gap: 1rem;
     }
-    
+
     #menu {
         margin-right: 0;
         width: 100%;
         justify-content: center;
     }
-    
+
     .two-column-layout {
         flex-direction: column;
         height: auto;
         max-height: none;
     }
-    
+
     .left-column {
         flex: none;
         width: 100%;
@@ -923,13 +923,13 @@ footer {
         padding-bottom: 10px;
         margin-bottom: 10px;
     }
-    
+
     .right-column {
         flex: none;
         width: 100%;
         padding-left: 0;
     }
-    
+
     #chat-container {
         min-height: 350px;
     }
@@ -940,7 +940,7 @@ footer {
     .chat-messages {
         padding-bottom: 60px;
     }
-    
+
     .message {
         max-width: 90%;
     }
@@ -956,3 +956,61 @@ footer {
     transition: all 0.3s ease;
 }
 
+/* Ocultar la imagen cropped en el contenedor de explicación si es necesario */
+@media (max-height: 700px) {
+    #simulator-cropped-image, #cropped-image {
+        display: none;
+    }
+
+    .selected-area {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+/* Ajustes responsivos para pantallas muy pequeñas */
+@media (max-height: 600px) {
+    .container {
+        padding: 1rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+        margin-bottom: 0.6rem;
+    }
+
+    .image-container, #image-container {
+        max-height: 300px;
+    }
+
+    #uploaded-image, #simulator-image {
+        max-height: 300px;
+    }
+
+    .action-buttons {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+
+    #zoom-controls {
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Mejorar la adaptabilidad del contenedor en dispositivos móviles */
+@media (max-width: 992px) {
+    .left-column {
+        height: 380px;
+        padding-bottom: 10px;
+        margin-bottom: 10px;
+    }
+
+    #chat-container {
+        min-height: 350px;
+    }
+
+    .container {
+        padding: 1.2rem;
+    }
+}

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test - Cupra Tavascan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #222;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .section {
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .response {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 15px;
+            white-space: pre-wrap;
+            overflow: auto;
+            max-height: 300px;
+        }
+        .box-inputs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .box-inputs input {
+            width: 60px;
+        }
+        #imagePreview {
+            max-width: 100%;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+        }
+        .coordinate-box {
+            position: absolute;
+            border: 2px solid red;
+            pointer-events: none;
+        }
+        .preview-container {
+            position: relative;
+            margin-top: 15px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cupra Tavascan API Test</h1>
+
+        <!-- Chat Section -->
+        <div class="section">
+            <h2>Chat API</h2>
+            <div class="form-group">
+                <label for="chatQuery">Pregunta:</label>
+                <textarea id="chatQuery" rows="3" placeholder="Escribe tu pregunta aquí..."></textarea>
+            </div>
+            <button id="sendChat">Enviar Pregunta</button>
+            <div id="chatResponse" class="response" style="display: none;"></div>
+        </div>
+
+        <!-- Image Section -->
+        <div class="section">
+            <h2>Image API</h2>
+            <div class="form-group">
+                <label for="imagePath">Ruta de la imagen:</label>
+                <input type="text" id="imagePath" placeholder="Ruta completa de la imagen" />
+            </div>
+            <div class="form-group">
+                <label>Coordenadas del recuadro [x0, y0, x1, y1]:</label>
+                <div class="box-inputs">
+                    <input type="number" id="x0" placeholder="x0" value="497">
+                    <input type="number" id="y0" placeholder="y0" value="245">
+                    <input type="number" id="x1" placeholder="x1" value="700">
+                    <input type="number" id="y1" placeholder="y1" value="351">
+                </div>
+            </div>
+            <button id="sendImage">Analizar Imagen</button>
+            
+            <div class="preview-container">
+                <img id="imagePreview" style="display: none;" />
+                <div id="selectionBox" class="coordinate-box"></div>
+            </div>
+            
+            <div id="imageResponse" class="response" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const API_URL = 'http://localhost:5000';
+
+            // Chat API
+            document.getElementById('sendChat').addEventListener('click', function() {
+                const query = document.getElementById('chatQuery').value.trim();
+                if (!query) {
+                    alert('Por favor, escribe una pregunta');
+                    return;
+                }
+
+                fetch(`${API_URL}/chat`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ query: query })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const responseElement = document.getElementById('chatResponse');
+                    responseElement.textContent = JSON.stringify(data, null, 2);
+                    responseElement.style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al enviar la pregunta: ' + error.message);
+                });
+            });
+
+            // Image API
+            document.getElementById('imagePath').addEventListener('change', function() {
+                const imagePath = this.value.trim();
+                if (imagePath) {
+                    // For local testing - just display the file name
+                    document.getElementById('imagePreview').style.display = 'block';
+                    document.getElementById('imagePreview').src = 'https://via.placeholder.com/800x600?text=Imagen+Simulada';
+                    updateSelectionBox();
+                }
+            });
+
+            // Update the selection box when coordinates change
+            ['x0', 'y0', 'x1', 'y1'].forEach(id => {
+                document.getElementById(id).addEventListener('change', updateSelectionBox);
+            });
+
+            function updateSelectionBox() {
+                const x0 = parseInt(document.getElementById('x0').value) || 0;
+                const y0 = parseInt(document.getElementById('y0').value) || 0;
+                const x1 = parseInt(document.getElementById('x1').value) || 0;
+                const y1 = parseInt(document.getElementById('y1').value) || 0;
+                
+                const box = document.getElementById('selectionBox');
+                box.style.left = x0 + 'px';
+                box.style.top = y0 + 'px';
+                box.style.width = (x1 - x0) + 'px';
+                box.style.height = (y1 - y0) + 'px';
+            }
+
+            document.getElementById('sendImage').addEventListener('click', function() {
+                const imagePath = document.getElementById('imagePath').value.trim();
+                if (!imagePath) {
+                    alert('Por favor, ingresa la ruta de la imagen');
+                    return;
+                }
+
+                const x0 = parseInt(document.getElementById('x0').value);
+                const y0 = parseInt(document.getElementById('y0').value);
+                const x1 = parseInt(document.getElementById('x1').value);
+                const y1 = parseInt(document.getElementById('y1').value);
+
+                fetch(`${API_URL}/image`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        image_path: imagePath,
+                        box: [x0, y0, x1, y1]
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const responseElement = document.getElementById('imageResponse');
+                    responseElement.textContent = JSON.stringify(data, null, 2);
+                    responseElement.style.display = 'block';
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al analizar la imagen: ' + error.message);
+                });
+            });
+
+            // Initialize with default values from example
+            updateSelectionBox();
+        });
+    </script>
+</body>
+</html>

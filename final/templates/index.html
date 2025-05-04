@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cupra Tavascan - Asistente Digital</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -33,21 +33,20 @@
         </div>
     </div>
     <video id="background-video" autoplay muted loop>
-        <source src="Back.mp4" type="video/mp4">
+        <source src="{{ url_for('static', filename='videos/Back.mp4') }}" type="video/mp4">
         Tu navegador no soporta videos HTML5.
     </video>
     <header>
-        <img src="cupra-logo.png" alt="Cupra Logo" class="logo">
+        <img src="{{ url_for('static', filename='images/logos/cupra-logo.png') }}" alt="Cupra Logo" class="logo">
         <nav id="menu">
             <ul>
                 <li><a href="#home" class="menu-link active">Inicio</a></li>
                 <li><a href="#simulator" class="menu-link">Simulador 3D</a></li>
-                <li><a href="#extra-features" class="menu-link">Extra Features</a></li>
                 <li><a href="#signup" class="menu-link">Registro</a></li>
             </ul>
         </nav>
     </header>
-    
+
     <main>
         <div class="two-column-layout">
             <!-- Columna izquierda - Chat -->
@@ -74,42 +73,42 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Columna derecha - Contenido principal -->
             <div class="right-column">
                 <div class="container">
                     <div id="home" class="tab-content active">
                         <h1>Asistente Digital <strong class="copper-text">CUPRA TAVASCAN</strong></h1>
-                        
+
                         <div class="instructions">
                             <p>Descubre todo sobre tu Cupra Tavascan de manera interactiva:</p>
                             <ol>
                                 <li>Sube una imagen de tu vehículo o de los controles</li>
                             </ol>
                         </div>
-                        
+
                         <div class="upload-container">
                             <input type="file" id="file-input" accept="image/*" style="display: none;">
                             <button class="upload-btn" id="browse-btn">Subir imagen</button>
                         </div>
-                        
+
                         <div id="image-workspace">
                             <div class="image-container">
                                 <img id="uploaded-image" src="" alt="Imagen subida">
                                 <div class="selection-overlay" id="selection-overlay"></div>
                                 <div class="selection-box" id="selection-box"></div>
                             </div>
-                            
+
                             <div class="action-buttons">
                                 <button class="action-btn" id="reset-btn">Reiniciar selección</button>
                                 <button class="action-btn" id="submit-btn">Consultar</button>
                             </div>
-                            
+
                             <div class="loading" id="loading">
                                 <div class="spinner"></div>
                                 <p>Analizando imagen...</p>
                             </div>
-                            
+
                             <div class="explanation-container" id="explanation-container">
                                 <h2 class="explanation-title">Información detallada</h2>
                                 <div class="selected-area">
@@ -127,7 +126,7 @@
                         <div id="image-viewer">
                             <button id="prev-btn" class="arrow-btn" aria-label="Anterior">⟵</button>
                             <div id="image-container">
-                                <img id="simulator-image" src="cupra_frames/1.png" alt="Simulación 3D">
+                                <img id="simulator-image" src="{{ url_for('static', filename='cupra_frames/1.png') }}" alt="Simulación 3D">
                                 <div class="selection-overlay" id="simulator-selection-overlay"></div>
                                 <div class="selection-box" id="simulator-selection-box"></div>
                             </div>
@@ -156,55 +155,15 @@
                             </div>
                         </div>
                     </div>
-
-                    <div id="extra-features" class="tab-content">
-                        <h1>Extra <span class="copper-text">Features</span></h1>
-                        
-                        <div class="features-grid">
-                            <div class="feature-card">
-                                <img src="features/feature1.png" alt="Asistente de voz">
-                                <h3>Asistente de voz</h3>
-                                <p>Control por voz inteligente para una experiencia de conducción manos libres.</p>
-                                <button class="feature-btn">Activar</button>
-                            </div>
-                            
-                            <div class="feature-card">
-                                <img src="features/feature2.png" alt="Modo ECO">
-                                <h3>Modo ECO</h3>
-                                <p>Maximiza la eficiencia energética y autonomía de tu vehículo eléctrico.</p>
-                                <button class="feature-btn">Configurar</button>
-                            </div>
-                            
-                            <div class="feature-card">
-                                <img src="features/feature3.png" alt="Gestión de carga">
-                                <h3>Gestión de carga</h3>
-                                <p>Programa y optimiza los ciclos de carga para prolongar la vida de la batería.</p>
-                                <button class="feature-btn">Programar</button>
-                            </div>
-                            
-                            <div class="feature-card">
-                                <img src="features/feature4.png" alt="Conducción autónoma">
-                                <h3>Conducción autónoma</h3>
-                                <p>Experimenta la última tecnología en asistencia a la conducción nivel 2+.</p>
-                                <button class="feature-btn">Explorar</button>
-                            </div>
-                        </div>
-                        
-                        <div class="feature-details">
-                            <h2>Personalización avanzada</h2>
-                            <p>Descubre opciones adicionales para personalizar tu experiencia CUPRA Tavascan.</p>
-                            <button class="action-btn">Ver más características</button>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
     </main>
-    
+
     <footer>
         © 2025 CUPRA. Todos los derechos reservados.
     </footer>
 
-    <script src="script.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>
