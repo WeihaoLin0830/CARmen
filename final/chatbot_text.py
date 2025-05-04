@@ -26,27 +26,27 @@ class PdfChatbot:
         self.chat_history = []
         self.model_name = model_name
         self.use_query_expansion = True
-        
+
         # Setup Gemini API
         api_key = os.getenv("GEMINI_API_KEY")
         if not api_key:
             raise ValueError("GEMINI_API_KEY not found in environment variables. "
                             "Please add it to a .env file or set it in your environment.")
-        
+
         # Initialize Gemini client
         self.client = genai.Client(api_key=api_key)
-        
+
         # Initialize chat session
         self.current_context = None
         self.chat_session = None
         self.initialize_chat_session()
-        
+
         # Setup ChromaDB
         self._setup_chromadb()
-        
+
         # Load chunks
         self.load_chunks()
-    
+
     def initialize_chat_session(self):
         """Create a new chat session with the model and initialize it with system prompt"""
         system_prompt = (
@@ -59,52 +59,52 @@ class PdfChatbot:
             "If there are Figures relevant to the answer, put them in a list"
             "When asked to summarize or explain something from previous context, refer back to that content."
         )
-        
+
         self.chat_session = self.client.chats.create(model=self.model_name)
         # Initialize with system prompt
         self.chat_session.send_message(system_prompt)
         self.current_context = None
-    
+
     def _find_content_dir(self, content_dir=None):
         """Find content directory if not specified"""
         if content_dir and os.path.exists(content_dir):
             return content_dir
-            
+
         # Look for directories that match the pattern "extracted_content_*"
         current_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))  # Get parent directory
         potential_dirs = []
-        
+
         for item in os.listdir(current_dir):
             if os.path.isdir(os.path.join(current_dir, item)) and item.startswith("extracted_content_"):
                 potential_dirs.append(os.path.join(current_dir, item))
-                
+
         if not potential_dirs:
             raise FileNotFoundError("No extracted content directories found. Please process a PDF first.")
-            
+
         if len(potential_dirs) == 1:
             return potential_dirs[0]
-            
+
         # If multiple directories found but can't prompt user in import mode, use the first one
         return potential_dirs[0]
-    
+
     def _setup_chromadb(self):
         """Set up the ChromaDB connection"""
         if self.use_chroma:
             # Use persistent client with path to the chroma_db directory
             chroma_dir = os.path.join(self.content_dir, "chroma_db")
-            
+
             if not os.path.exists(chroma_dir):
                 raise FileNotFoundError(
                     f"ChromaDB directory not found at {chroma_dir}. "
                     "Please run retrieval.py first to create the vector database."
                 )
-                
+
             # Initialize persistent client
             self.chroma_client = chromadb.PersistentClient(path=chroma_dir)
             sentence_transformer_ef = embedding_functions.SentenceTransformerEmbeddingFunction(
                 model_name="all-MiniLM-L6-v2"
             )
-            
+
             # Create or get collection
             collection_name = f"pdf_chunks_{os.path.basename(self.content_dir)}"
             try:
@@ -118,14 +118,14 @@ class PdfChatbot:
                     f"Error: {str(e)}. "
                     "Please run retrieval.py first to create the collection."
                 )
-    
+
     def load_chunks(self):
         """Load the chunks from the JSON file"""
         chunks_path = os.path.join(self.content_dir, "rag_chunks.json")
-        
+
         if not os.path.exists(chunks_path):
             raise FileNotFoundError(f"Chunks file not found at {chunks_path}")
-            
+
         with open(chunks_path, "r", encoding="utf-8") as f:
             self.chunks = json.load(f)
 
@@ -143,27 +143,27 @@ class PdfChatbot:
         """
         # Calculate relevance scores using simple term matching
         query_terms = set(query.lower().split())
-        
+
         for chunk in chunks:
             # Count term overlap between query and chunk text
             chunk_text = chunk.get('text', '').lower()
             matched_terms = sum(1 for term in query_terms if term in chunk_text)
-            
+
             # Simple scoring: term frequency + section title match bonus
             score = matched_terms
-            
+
             # Add bonus for section title matches
             section_title = chunk.get('section_title', '').lower()
             section_match = sum(1 for term in query_terms if term in section_title)
             score += section_match * 2  # Title matches get double weight
-            
+
             # Store score in chunk
             chunk['score'] = score
-        
+
         # Sort by score (descending) and return top_k
         ranked_chunks = sorted(chunks, key=lambda x: x.get('score', 0), reverse=True)
         return ranked_chunks[:top_k]
-    
+
     def expand_query(self, query):
         """
         Expand the query with synonyms and related terms
@@ -177,7 +177,7 @@ class PdfChatbot:
         # If query expansion is disabled, return the original query
         if not self.use_query_expansion:
             return query
-            
+
         try:
             # Use a separate generation model for query expansion
             expansion_prompt = f"""
@@ -191,19 +191,19 @@ class PdfChatbot:
             Format the output as a single line with all terms separated by spaces.
             Only include relevant terms, no explanations or other text.
             """
-            
+
             # Generate expanded terms
             response = self.client.generate_content(expansion_prompt)
             expanded_terms = response.text.strip()
-            
+
             # Combine original query with expanded terms
             expanded_query = f"{query} {expanded_terms}"
             return expanded_query
-            
+
         except Exception:
             # Fall back to original query if expansion fails
             return query
-    
+
     def retrieve_context(self, query, top_k=3):
         """
         Retrieve relevant context based on the query
@@ -218,13 +218,13 @@ class PdfChatbot:
         if self.use_chroma:
             # Expand the query to improve retrieval
             expanded_query = self.expand_query(query)
-            
+
             # Use ChromaDB for search with the expanded query
             results = self.collection.query(
                 query_texts=[expanded_query],
                 n_results=top_k * 2  # Retrieve more results initially as we'll filter them later
             )
-            
+
             # Format results to match the original format
             contexts = []
             for i, doc_id in enumerate(results["ids"][0]):
@@ -271,7 +271,7 @@ class PdfChatbot:
                     all_chunks_from_pages.extend(page_chunks)
                     top_pages.append(page_num)  # Add to top_pages to track inclusion
                     new_pages_added = True
-            
+
             # Rerank again if new pages were added
             if new_pages_added:
                 reranked = self._rerank_chunks(all_chunks_from_pages, query, top_k=top_k)
@@ -279,17 +279,17 @@ class PdfChatbot:
             return reranked[:top_k]  # Return only the top_k most relevant chunks
         else:
             raise ValueError("ChromaDB is required for context retrieval")
-    
+
     def format_context_for_prompt(self, contexts):
         """Format retrieved contexts for the prompt"""
         context_text = ""
-        
+
         for i, ctx in enumerate(contexts):
             context_text += f"[Context {i+1} - Page {ctx.get('start_page', 'unknown')} - {ctx.get('section_title', 'Section')}]\n"
             context_text += f"{ctx['text']}\n\n"
-            
+
         return context_text.strip()
-    
+
     def get_response(self, query, top_k=3):
         """
         Get response from Gemini with relevant context
@@ -303,14 +303,14 @@ class PdfChatbot:
         """
         # Retrieve relevant context based on the query
         contexts = self.retrieve_context(query, top_k=top_k)
-        
+
         if not contexts:
             context_text = "No relevant context found in the document."
         else:
             context_text = self.format_context_for_prompt(contexts)
             # Save the current context for potential follow-up questions
             self.current_context = context_text
-        
+
         # If the query seems like a follow-up question and we have previous context
         if (self.is_followup_question(query) and self.current_context):
             # Use current context from the previous query
@@ -318,26 +318,26 @@ class PdfChatbot:
         else:
             # Use newly retrieved context
             full_prompt = f"Document Context:\n{context_text}\n\nUser Question: {query}"
-        
+
         # Get response from Gemini using chat session
         try:
             response = self.chat_session.send_message(full_prompt)
             return response.text
         except Exception as e:
             return f"Error generating response: {str(e)}"
-    
+
     def is_followup_question(self, query):
         """Check if the query is likely a follow-up question"""
         followup_indicators = [
-            "it", "this", "that", "these", "those", "the", "they", "them", 
+            "it", "this", "that", "these", "those", "the", "they", "them",
             "their", "he", "she", "his", "her", "what about", "how about",
-            "can you", "tell me more", "explain", "elaborate", "summarize", 
+            "can you", "tell me more", "explain", "elaborate", "summarize",
             "resume", "continue", "go on", "and", "also", "additionally"
         ]
-        
+
         query_lower = query.lower()
         # Check if query is short or contains followup indicators
-        return (len(query.split()) <= 5 or 
+        return (len(query.split()) <= 5 or
                 any(indicator in query_lower for indicator in followup_indicators))
 
 def get_response_json(query, content_dir=None, model_name="gemini-2.0-flash", top_k=3):
@@ -355,7 +355,7 @@ def get_response_json(query, content_dir=None, model_name="gemini-2.0-flash", to
     """
     chatbot = PdfChatbot(content_dir=content_dir, model_name=model_name)
     response_text = chatbot.get_response(query, top_k=top_k)
-    
+
     # Extract JSON from the response
     try:
         response_clean = re.sub(r'```json', '', response_text)
@@ -377,7 +377,7 @@ def main():
     parser.add_argument("--top_k", "-k", type=int, default=3, help="Number of context chunks to use")
     parser.add_argument("--query", "-q", help="Query to process (if not provided, interactive mode will start)")
     args = parser.parse_args()
-    
+
     try:
         if args.query:
             # Process a single query and return JSON
@@ -386,30 +386,30 @@ def main():
         else:
             # Initialize and start interactive chatbot
             chatbot = PdfChatbot(content_dir=args.content_dir, model_name=args.model)
-            
+
             print("\nPDF Chatbot ready! Ask questions about your document.")
             print("Type 'exit', 'quit', or 'q' to end the conversation.\n")
-            
+
             while True:
                 user_query = input("\nYou: ")
-                
+
                 if user_query.lower() in ["exit", "quit", "q"]:
                     print("\nGoodbye!")
                     break
-                    
+
                 if not user_query.strip():
                     continue
-                    
+
                 print("\nProcessing...")
                 response = chatbot.get_response(user_query)
-                
+
                 # Extract and display JSON
                 try:
                     response_clean = re.sub(r'```json', '', response)
                     response_clean = re.sub(r'```', '', response_clean)
                     response_json = json.loads(response_clean)
                     print(f"\nAssistant: {json.dumps(response_json, indent=4)}")
-                  
+
                 except json.JSONDecodeError:
                     print(f"\nAssistant: {response}")
     except Exception as e:
