@@ -55,18 +55,19 @@ def get_image_paths(image_ids):
     """
     Given a list of image IDs, return the paths of the images
     located in the extracted_content_manual/images directory.
+    If the image ID is a number, it will count the images and select the nth image.
     """
+    content_dir = "extracted_content_manual"  # Define the base directory
     image_dir = os.path.join(content_dir, "images")
     image_paths = []
 
-    for image_id in image_ids:
-        image_path = os.path.join(image_dir, f"{image_id}.jpg")
-        if os.path.exists(image_path):
-            image_paths.append(image_path)
-        else:
-            print(f"Image not found: {image_path}")
+    all_images = sorted(os.listdir(image_dir))
+    result = []
 
-    return image_paths
+    for i in image_ids:
+        result.append(all_images[i-1])
+        
+    return result
 
 def main(query):
     """
@@ -104,7 +105,7 @@ def image(image_path, box_coordinates):
     """
 
     # Ensure the image path is relative to the ../cupra_frames/ directory
-    full_image_path = os.path.join(parent_dir, "Hui", "cupra_frames", image_path)
+    full_image_path = os.path.join(parent_dir, "final", "static","cupra_frames", image_path)
     print(f"Processing image at path: {full_image_path}")
     print(f"Box coordinates: {box_coordinates}")
 
