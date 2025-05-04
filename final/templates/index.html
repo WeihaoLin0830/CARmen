@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cupra Tavascan - Asistente Digital</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -33,27 +33,27 @@
         </div>
     </div>
     <video id="background-video" autoplay muted loop>
-        <source src="Back.mp4" type="video/mp4">
-        Tu navegador no soporta videos HTML5.
+        <source src="{{ url_for('static', filename='videos/Back.mp4') }}" type="video/mp4">
     </video>
     <header>
-        <img src="cupra-logo.png" alt="Cupra Logo" class="logo">
-        <nav id="menu">
-            <ul>
-                <li><a href="#home" class="menu-link active">Inicio</a></li>
-                <li><a href="#simulator" class="menu-link">Simulador 3D</a></li>
-                <li><a href="#signup" class="menu-link">Registro</a></li>
-            </ul>
-        </nav>
+        <img src="{{ url_for('static', filename='images/logos/cupra-logo.png') }}" alt="CUPRA Logo" class="logo">
     </header>
-    
+
+    <nav id="menu">
+        <ul>
+            <li><a href="#home" class="menu-link active">Inicio</a></li>
+            <li><a href="#simulator" class="menu-link">Simulador 3D</a></li>
+            <li><a href="#signup" class="menu-link">Registro</a></li>
+        </ul>
+    </nav>
+
     <main>
         <div class="two-column-layout">
             <!-- Columna izquierda - Chat -->
             <div class="left-column">
                 <div id="chat-container">
                     <div class="chat-header">
-                        <h2>CUPRA <span class="copper-text">Asistente Virtual</span></h2>
+                        <h2>CUPRA Asistente Virtual</h2>
                     </div>
                     <div class="chat-messages" id="chat-messages">
                         <div class="message bot">
@@ -63,9 +63,9 @@
                         </div>
                     </div>
                     <div class="chat-input-container">
-                        <input type="text" id="chat-input" placeholder="Pregúntame sobre tu CUPRA Tavascan..." aria-label="Escribe tu mensaje">
-                        <button id="chat-submit" aria-label="Enviar mensaje">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <input type="text" id="chat-input" placeholder="Escribe tu mensaje aquí...">
+                        <button id="chat-submit">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="22" y1="2" x2="11" y2="13"></line>
                                 <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                             </svg>
@@ -73,42 +73,42 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Columna derecha - Contenido principal -->
             <div class="right-column">
                 <div class="container">
                     <div id="home" class="tab-content active">
                         <h1>Asistente Digital <strong class="copper-text">CUPRA TAVASCAN</strong></h1>
-                        
+
                         <div class="instructions">
                             <p>Descubre todo sobre tu Cupra Tavascan de manera interactiva:</p>
                             <ol>
                                 <li>Sube una imagen de tu vehículo o de los controles</li>
                             </ol>
                         </div>
-                        
+
                         <div class="upload-container">
                             <input type="file" id="file-input" accept="image/*" style="display: none;">
                             <button class="upload-btn" id="browse-btn">Subir imagen</button>
                         </div>
-                        
+
                         <div id="image-workspace">
                             <div class="image-container">
                                 <img id="uploaded-image" src="" alt="Imagen subida">
                                 <div class="selection-overlay" id="selection-overlay"></div>
                                 <div class="selection-box" id="selection-box"></div>
                             </div>
-                            
+
                             <div class="action-buttons">
                                 <button class="action-btn" id="reset-btn">Reiniciar selección</button>
                                 <button class="action-btn" id="submit-btn">Consultar</button>
                             </div>
-                            
+
                             <div class="loading" id="loading">
                                 <div class="spinner"></div>
                                 <p>Analizando imagen...</p>
                             </div>
-                            
+
                             <div class="explanation-container" id="explanation-container">
                                 <h2 class="explanation-title">Información detallada</h2>
                                 <div class="selected-area">
@@ -122,15 +122,15 @@
                     </div>
 
                     <div id="simulator" class="tab-content">
-                        <h1>Simulador <span class="copper-text">3D</span></h1>
+                        <h1>Simulador 3D</h1>
                         <div id="image-viewer">
-                            <button id="prev-btn" class="arrow-btn" aria-label="Anterior">⟵</button>
+                            <button id="prev-btn" class="arrow-btn">⟵</button>
                             <div id="image-container">
-                                <img id="simulator-image" src="cupra_frames/1.png" alt="Simulación 3D">
+                                <img id="simulator-image" src="cupra_frames/1.png" alt="3D Simulation">
                                 <div class="selection-overlay" id="simulator-selection-overlay"></div>
                                 <div class="selection-box" id="simulator-selection-box"></div>
                             </div>
-                            <button id="next-btn" class="arrow-btn" aria-label="Siguiente">⟶</button>
+                            <button id="next-btn" class="arrow-btn">⟶</button>
                         </div>
                         <div id="zoom-controls">
                             <button id="zoom-in-btn" class="zoom-btn">Zoom In</button>
@@ -147,7 +147,6 @@
                         <div class="explanation-container" id="simulator-explanation-container">
                             <h2 class="explanation-title">Información detallada</h2>
                             <div class="selected-area">
-                                <!-- Solo mostrar la imagen en pantallas con altura suficiente -->
                                 <img id="simulator-cropped-image" class="selected-image" src="" alt="Área seleccionada">
                                 <div class="explanation-content" id="simulator-explanation-content">
                                     La información sobre esta parte del simulador aparecerá aquí.
@@ -159,11 +158,107 @@
             </div>
         </div>
     </main>
-    
+
     <footer>
         © 2025 CUPRA. Todos los derechos reservados.
     </footer>
 
-    <script src="script.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script>
+        async function sendChatMessage(message) {
+            try {
+                const response = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query: message })
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+
+                if (data.error) {
+                    console.error('Error from server:', data.error);
+                    return {
+                        answer: "Lo siento, no puedo responder en este momento. Por favor, inténtalo de nuevo.",
+                        page_numbers: [],
+                        figure_numbers: []
+                    };
+                }
+
+                return data;
+            } catch (error) {
+                console.error('Error sending chat message:', error);
+                return {
+                    answer: "Lo siento, ha ocurrido un error al procesar tu consulta. Por favor, inténtalo de nuevo.",
+                    page_numbers: [],
+                    figure_numbers: []
+                };
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatInput = document.getElementById('chat-input');
+            const chatSubmit = document.getElementById('chat-submit');
+            const chatMessages = document.getElementById('chat-messages');
+
+            // Función para añadir mensajes al chat
+            function addMessage(message, isUser) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = isUser ? 'message user' : 'message bot';
+
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'message-content';
+
+                const paragraph = document.createElement('p');
+                paragraph.textContent = message;
+
+                contentDiv.appendChild(paragraph);
+                messageDiv.appendChild(contentDiv);
+                chatMessages.appendChild(messageDiv);
+
+                // Scroll al fondo
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Manejar el envío de mensajes
+            async function handleSubmit() {
+                const message = chatInput.value.trim();
+                if (!message) return;
+
+                // Agregar mensaje del usuario
+                addMessage(message, true);
+                chatInput.value = '';
+
+                // Mostrar indicador de carga
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'message bot loading';
+                loadingDiv.innerHTML = '<div class="message-content"><p>Escribiendo...</p></div>';
+                chatMessages.appendChild(loadingDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Obtener respuesta
+                const response = await sendChatMessage(message);
+
+                // Quitar indicador de carga
+                chatMessages.removeChild(loadingDiv);
+
+                // Mostrar respuesta
+                addMessage(response.answer, false);
+            }
+
+            // Event listeners
+            chatSubmit.addEventListener('click', handleSubmit);
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    handleSubmit();
+                }
+            });
+        });
+    </script>
 </body>
 </html>
