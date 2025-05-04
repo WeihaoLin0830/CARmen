@@ -42,6 +42,7 @@
             <ul>
                 <li><a href="#home" class="menu-link active">Inicio</a></li>
                 <li><a href="#simulator" class="menu-link">Simulador 3D</a></li>
+                <li><a href="#newfeatures" class="menu-link">New Features</a></li>
                 <li><a href="#signup" class="menu-link">Registro</a></li>
             </ul>
         </nav>
@@ -144,15 +145,20 @@
                             <div class="spinner"></div>
                             <p>Analizando imagen...</p>
                         </div>
-                        <div class="explanation-container" id="simulator-explanation-container">
-                            <h2 class="explanation-title">Información detallada</h2>
-                            <div class="selected-area">
-                                <!-- Solo mostrar la imagen en pantallas con altura suficiente -->
-                                <img id="simulator-cropped-image" class="selected-image" src="" alt="Área seleccionada">
-                                <div class="explanation-content" id="simulator-explanation-content">
-                                    La información sobre esta parte del simulador aparecerá aquí.
-                                </div>
-                            </div>
+                    </div>
+
+                    <div id="newfeatures" class="tab-content">
+                        <h1>Por <span class="copper-text">Explorar</span></h1>
+                        <p>Descubre las nuevas características de tu CUPRAN con visión de computadora:</p>
+                        
+                        <div class="features-container">
+                            <button class="feature-btn" id="volante-btn">Prueba con Volante</button>
+                            <button class="feature-btn" id="seatbelt-btn">Prueba con SeatBelt</button>
+                        </div>
+                        
+                        <div class="feature-image-container" id="feature-image-container">
+                            <img id="feature-image" src="" alt="Imagen de característica" style="display: none;">
+                            <p id="feature-description" class="feature-description"></p>
                         </div>
                     </div>
                 </div>
@@ -164,6 +170,46 @@
         © 2025 CUPRA. Todos los derechos reservados.
     </footer>
 
+    <!-- PDF Manual Viewer Modal -->
+    <div class="modal-overlay" id="pdf-modal">
+        <div class="pdf-viewer-container">
+            <div class="pdf-viewer-header">
+                <h3>Manual CUPRA Tavascan</h3>
+                <button class="pdf-viewer-close" id="pdf-viewer-close">&times;</button>
+            </div>
+            <div class="pdf-content" id="pdf-content">
+                <!-- PDF will be loaded here -->
+            </div>
+            <div class="pdf-nav">
+                <button id="pdf-prev">Anterior</button>
+                <span class="pdf-page-info" id="pdf-page-info">Página 1 de 120</span>
+                <button id="pdf-next">Siguiente</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
+    
+    <!-- Feature buttons functionality script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const volanteBtn = document.getElementById('volante-btn');
+            const seatbeltBtn = document.getElementById('seatbelt-btn');
+            const featureImage = document.getElementById('feature-image');
+            const featureDescription = document.getElementById('feature-description');
+            
+            volanteBtn.addEventListener('click', function() {
+                featureImage.src = 'volante.jpg'; // Ensure this path matches your actual image file
+                featureImage.style.display = 'block';
+                featureDescription.textContent = 'El volante del CUPRA Tavascan ofrece un diseño ergonómico y controles intuitivos para una experiencia de conducción superior.';
+            });
+            
+            seatbeltBtn.addEventListener('click', function() {
+                featureImage.src = 'seatbelt.jpg'; // Ensure this path matches your actual image file
+                featureImage.style.display = 'block';
+                featureDescription.textContent = 'El cinturón de seguridad del CUPRA Tavascan incluye tecnología avanzada para una máxima protección y confort durante el viaje.';
+            });
+        });
+    </script>
 </body>
 </html>
