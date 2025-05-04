@@ -51,7 +51,8 @@ class PdfChatbot:
         """Create a new chat session with the model and initialize it with system prompt"""
         system_prompt = (
             "You are a helpful assistant specialized in answering questions about a cupra Tavascan manual. "
-            "Base your answers only on the provided document context. "
+            "Base your answers on the provided document context. "
+            "If you know the answer, respond with it. "
             "If the context doesn't contain enough information to answer, say you don't have enough information. "
             "Always cite the page numbers from the context you used. "
             "Try to be concise and avoid unnecessary details. "
@@ -340,7 +341,7 @@ class PdfChatbot:
         return (len(query.split()) <= 5 or
                 any(indicator in query_lower for indicator in followup_indicators))
 
-def get_response_json(query, content_dir=None, model_name="gemini-2.0-flash", top_k=3):
+def get_response_json(content_dir=None, model_name="gemini-2.0-flash", top_k=3):
     """
     Get JSON response for a query about the PDF content
     
@@ -354,20 +355,8 @@ def get_response_json(query, content_dir=None, model_name="gemini-2.0-flash", to
         JSON object with answer, page_numbers and figure_numbers
     """
     chatbot = PdfChatbot(content_dir=content_dir, model_name=model_name)
-    response_text = chatbot.get_response(query, top_k=top_k)
-
-    # Extract JSON from the response
-    try:
-        response_clean = re.sub(r'```json', '', response_text)
-        response_clean = re.sub(r'```', '', response_clean)
-        return json.loads(response_clean)
-    except json.JSONDecodeError:
-        # Return a fallback JSON if parsing fails
-        return {
-            "answer": response_text,
-            "page_numbers": [],
-            "figure_numbers": []
-        }
+    
+    return chatbot
 
 # Command-line interface functionality
 def main():
