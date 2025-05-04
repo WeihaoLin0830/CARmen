@@ -87,7 +87,7 @@ def image(image_path, box_coordinates):
     """
 
     # Ensure the image path is relative to the ../cupra_frames/ directory
-    full_image_path = os.path.join(parent_dir, "..", "cupra_frames", image_path)
+    full_image_path = os.path.join(parent_dir, "Hui", "cupra_frames", image_path)
     print(f"Processing image at path: {full_image_path}")
     print(f"Box coordinates: {box_coordinates}")
 
@@ -149,8 +149,8 @@ def image(image_path, box_coordinates):
             scores
         )
         
-        print(f"\nJSON Response generated successfully: {json_response}")
-        print(f"Processing completed in {time.time() - start_time:.2f} seconds")
+        #print(f"\nJSON Response generated successfully: {json_response}")
+        #print(f"Processing completed in {time.time() - start_time:.2f} seconds")
         return json_response
         
     except Exception as e:
