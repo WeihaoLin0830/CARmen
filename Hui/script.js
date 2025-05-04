@@ -744,43 +744,78 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Función para optimizar el área de visualización sin scrollbars
+    // Optimizar el espacio visual dinámicamente según el tamaño de pantalla
     function optimizeVisualSpace() {
-        // Asegurar que el contenedor principal no tenga scrollbar interno
+        // Comprobar altura de la ventana
+        const windowHeight = window.innerHeight;
+        
+        // Ajustar containers según altura disponible
         const containers = document.querySelectorAll('.container');
         containers.forEach(container => {
-            // Ajustar el padding según el contenido
-            const contentHeight = container.scrollHeight;
-            const availableHeight = window.innerHeight - 200; // Restar aproximadamente header + footer
-            
-            if (contentHeight > availableHeight) {
-                // Si el contenido es más alto que el espacio disponible, reducir padding
-                container.style.paddingTop = '1.5rem';
-                container.style.paddingBottom = '1.5rem';
+            // En pantallas muy pequeñas, reducir más el padding
+            if (windowHeight < 600) {
+                container.style.padding = '1rem';
+            } else if (windowHeight < 800) {
+                container.style.padding = '1.25rem';
+            } else {
+                container.style.padding = '1.5rem';
             }
         });
         
-        // Asegurar que las imágenes se ajusten correctamente
-        const images = document.querySelectorAll('#uploaded-image, #simulator-image');
-        images.forEach(img => {
-            img.addEventListener('load', function() {
-                // Ajustar tamaño de contenedor de imagen según la proporción
-                const container = this.parentElement;
-                const maxHeight = Math.min(450, window.innerHeight - 350);
-                container.style.maxHeight = maxHeight + 'px';
-                
-                // Aplicar clase para transición suave
-                this.classList.add('smooth-transition');
+        // Ajustar visibilidad de las imágenes de áreas seleccionadas
+        const croppedImages = document.querySelectorAll('#cropped-image, #simulator-cropped-image');
+        if (windowHeight < 700) {
+            croppedImages.forEach(img => {
+                img.style.display = 'none';
             });
+            
+            // Ajustar el layout de la explicación
+            document.querySelectorAll('.selected-area').forEach(area => {
+                area.style.flexDirection = 'column';
+                area.style.gap = '0.5rem';
+            });
+        } else {
+            croppedImages.forEach(img => {
+                img.style.display = 'block';
+            });
+            
+            document.querySelectorAll('.selected-area').forEach(area => {
+                area.style.flexDirection = 'row';
+                area.style.gap = '0.8rem';
+            });
+        }
+        
+        // Ajustar altura máxima de las imágenes según altura de ventana
+        let maxImageHeight = 380; // valor predeterminado
+        
+        if (windowHeight < 600) {
+            maxImageHeight = 280;
+        } else if (windowHeight < 700) {
+            maxImageHeight = 320;
+        } else if (windowHeight < 800) {
+            maxImageHeight = 350;
+        }
+        
+        // Aplicar la altura máxima a los contenedores de imágenes
+        document.querySelectorAll('.image-container, #image-container').forEach(container => {
+            container.style.maxHeight = maxImageHeight + 'px';
         });
         
-        // Optimizar altura de las explicaciones
-        const explanationContainers = document.querySelectorAll('.explanation-container, #simulator-explanation-container');
-        explanationContainers.forEach(container => {
-            const maxHeightForExplanation = Math.min(250, window.innerHeight - 500);
-            container.style.maxHeight = maxHeightForExplanation + 'px';
+        document.querySelectorAll('#uploaded-image, #simulator-image').forEach(img => {
+            img.style.maxHeight = maxImageHeight + 'px';
         });
     }
+
+    // Ejecutar la optimización al cargar y cuando se redimensione la ventana
+    window.addEventListener('load', optimizeVisualSpace);
+    window.addEventListener('resize', optimizeVisualSpace);
+    
+    // También ejecutar la optimización cuando se cambie de pestaña
+    document.querySelectorAll('.menu-link').forEach(link => {
+        link.addEventListener('click', function() {
+            setTimeout(optimizeVisualSpace, 100);
+        });
+    });
 
     // Ejecutar optimización al cargar y cuando se redimensione la ventana
     window.addEventListener('load', optimizeVisualSpace);
