@@ -7,7 +7,7 @@
         "video_metadata": {
           "video_identifier": "image",
           "frame_number": 0,
-          "frame_timestamp": "2025-05-03T17:09:48.871931",
+          "frame_timestamp": "2025-05-03T19:38:39.821124",
           "fps": 30.0,
           "measured_fps": null,
           "comes_from_video_file": null
@@ -24,10 +24,10 @@
             "height": 113.671875,
             "x": 1001.650390625,
             "y": 340.625,
-            "confidence": 0.9525324702262878,
+            "confidence": 0.9525531530380249,
             "class_id": 3,
             "class": "HMI Multimedia screen",
-            "detection_id": "3a613394-a00b-441d-a301-97eda396ed27",
+            "detection_id": "9b7613ca-d26d-40b5-83e3-dc56d086cab5",
             "parent_id": "image"
           },
           {
@@ -35,21 +35,21 @@
             "height": 270.5078125,
             "x": 579.375,
             "y": 455.44921875,
-            "confidence": 0.9755122065544128,
+            "confidence": 0.9754964709281921,
             "class_id": 8,
             "class": "Steering wheel",
-            "detection_id": "de306a19-e6a6-4d72-9604-d7f6d85cce9b",
+            "detection_id": "da03f1d7-c268-4d92-9950-f811e135c7d5",
             "parent_id": "image"
           },
           {
-            "width": 121.19140625,
+            "width": 121.2890625,
             "height": 266.40625,
             "x": 702.841796875,
             "y": 452.12890625,
-            "confidence": 0.9535436630249023,
+            "confidence": 0.9537319540977478,
             "class_id": 8,
             "class": "Steering wheel",
-            "detection_id": "ef511c0b-5a0f-4d22-a000-455af85acf86",
+            "detection_id": "4fafb33f-1788-43bb-901f-7c0dba0201f9",
             "parent_id": "image"
           }
         ]

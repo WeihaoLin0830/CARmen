@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Página con Chatbot Fijo</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      overflow-y: scroll; /* Un solo scroll */
+      background-color: #000;
+      color: white;
+      font-family: sans-serif;
+    }
+
+    /* Contenido principal */
+    .contenido {
+      max-width: 800px;
+      margin-left: 360px; /* Ajustado para que no sea tapado por el chatbot */
+      padding: 20px;
+    }
+
+    /* Chatbot fijo, fuera del flujo */
+    .chatbot {
+      position: fixed;
+      top: 50%;
+      left: 20px;
+      transform: translateY(-50%);
+      width: 300px;
+      height: 500px;
+      background-color: #111;
+      border-radius: 10px;
+      border: 2px solid #a56a2a;
+      padding: 15px;
+      z-index: 999;
+      overflow: hidden; /* evita que tenga scroll propio */
+    }
+
+    .chatbot h3 {
+      margin-top: 0;
+      color: #fff;
+    }
+
+    /* Simulación de mucho contenido para scroll */
+    .contenido p {
+      margin-bottom: 1000px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="chatbot">
+    <h3>CUPRA Asistente Virtual</h3>
+    <p>¡Hola! Soy tu asistente virtual de CUPRA. ¿En qué puedo ayudarte hoy?</p>
+    <input type="text" placeholder="Escribe tu mensaje aquí…" style="width: 100%;">
+  </div>
+
+  <div class="contenido">
+    <h1>Asistente Digital CUPRA TAVASCAN</h1>
+    <button style="padding: 10px 20px; background-color: #a56a2a; border: none; color: white; font-weight: bold;">SUBIR IMAGEN</button>
+    <p>Contenido largo aquí para probar el scroll...</p>
+  </div>
+
+</body>
+</html>
+
