@@ -679,7 +679,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 // Aseguramos que haya suficiente espacio para la barra de entrada
                 const chatInputHeight = document.querySelector('.chat-input-container').offsetHeight;
-                messagesContainer.style.paddingBottom = (chatInputHeight + 20) + 'px';
+                messagesContainer.style.paddingBottom = (chatInputHeight + 10) + 'px';
                 
                 // Scroll al último mensaje
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
@@ -699,13 +699,109 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Add welcome message if no messages exist
             if (document.querySelectorAll('.chat-messages .message').length === 0) {
-                addMessage("¡Hola! Soy tu asistente virtual de CUPRA. ¿En qué puedo ayudarte hoy?", false);
+                addMessage("¡Hola! Soy tu asistente virtual de CUPRA. ¿En qué puedo ayudarte hoy con tu CUPRA Tavascan?", false);
             }
+            
+            // Añadir efecto de enfoque automático cuando se hace clic en cualquier parte del contenedor de chat
+            chatContainer.addEventListener('click', function() {
+                if (document.activeElement !== chatInput) {
+                    chatInput.focus();
+                }
+            });
+            
+            // Mejorar el placeholder del input con animación
+            const originalPlaceholder = chatInput.placeholder;
+            let isDefaultPlaceholder = true;
+            
+            // Cambiar el placeholder periódicamente para sugerir preguntas
+            setInterval(() => {
+                if (document.activeElement !== chatInput && chatInput.value === '') {
+                    if (isDefaultPlaceholder) {
+                        const suggestions = [
+                            "¿Cómo funciona la carga rápida?",
+                            "¿Cuándo debo realizar el mantenimiento?",
+                            "¿Cómo configuro los modos de conducción?",
+                            "¿Qué significan las luces del tablero?",
+                            "¿Cómo funciona el sistema de infoentretenimiento?"
+                        ];
+                        chatInput.placeholder = suggestions[Math.floor(Math.random() * suggestions.length)];
+                    } else {
+                        chatInput.placeholder = originalPlaceholder;
+                    }
+                    isDefaultPlaceholder = !isDefaultPlaceholder;
+                }
+            }, 5000);
+            
+            // Restaurar placeholder original al enfocar
+            chatInput.addEventListener('focus', function() {
+                setTimeout(() => {
+                    chatInput.placeholder = originalPlaceholder;
+                    isDefaultPlaceholder = true;
+                }, 100);
+            });
         } else {
             console.error("Faltan elementos del chatbox. Verifica que todos los IDs existan en el HTML.");
         }
     }
-    
+
+    // Función para optimizar el área de visualización sin scrollbars
+    function optimizeVisualSpace() {
+        // Asegurar que el contenedor principal no tenga scrollbar interno
+        const containers = document.querySelectorAll('.container');
+        containers.forEach(container => {
+            // Ajustar el padding según el contenido
+            const contentHeight = container.scrollHeight;
+            const availableHeight = window.innerHeight - 200; // Restar aproximadamente header + footer
+            
+            if (contentHeight > availableHeight) {
+                // Si el contenido es más alto que el espacio disponible, reducir padding
+                container.style.paddingTop = '1.5rem';
+                container.style.paddingBottom = '1.5rem';
+            }
+        });
+        
+        // Asegurar que las imágenes se ajusten correctamente
+        const images = document.querySelectorAll('#uploaded-image, #simulator-image');
+        images.forEach(img => {
+            img.addEventListener('load', function() {
+                // Ajustar tamaño de contenedor de imagen según la proporción
+                const container = this.parentElement;
+                const maxHeight = Math.min(450, window.innerHeight - 350);
+                container.style.maxHeight = maxHeight + 'px';
+                
+                // Aplicar clase para transición suave
+                this.classList.add('smooth-transition');
+            });
+        });
+        
+        // Optimizar altura de las explicaciones
+        const explanationContainers = document.querySelectorAll('.explanation-container, #simulator-explanation-container');
+        explanationContainers.forEach(container => {
+            const maxHeightForExplanation = Math.min(250, window.innerHeight - 500);
+            container.style.maxHeight = maxHeightForExplanation + 'px';
+        });
+    }
+
+    // Ejecutar optimización al cargar y cuando se redimensione la ventana
+    window.addEventListener('load', optimizeVisualSpace);
+    window.addEventListener('resize', optimizeVisualSpace);
+
+    // También enfocamos el input cuando se cambia a la pestaña correspondiente
+    document.querySelectorAll('.menu-link').forEach(link => {
+        link.addEventListener('click', function() {
+            // Cuando se cambia de pestaña, verificar si debemos enfocar el chat
+            setTimeout(() => {
+                const chatInput = document.getElementById('chat-input');
+                if (chatInput && window.getComputedStyle(chatInput).display !== 'none') {
+                    chatInput.focus();
+                }
+                
+                // Optimizar espacio visual después de cambiar de pestaña
+                optimizeVisualSpace();
+            }, 300);
+        });
+    });
+
     // Inicializar chatbox después de que todo esté cargado
     window.addEventListener('load', initializeChatbox);
     
