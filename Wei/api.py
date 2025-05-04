@@ -61,7 +61,7 @@ class ConfigUpdateRequest(BaseModel):
 
     model_config = ConfigDict(protected_namespaces=())  # Fix the Pydantic warning
 
-class PdfChatbot:
+
     def __init__(self, content_dir=None, model_name="gemini-1.5-flash", use_chroma=True):
         """
         Initialize the chatbot with a given content directory
@@ -544,7 +544,7 @@ class PdfChatbot:
                 "content": message.parts[0].text
             })
         return history
-
+from ..chatbot_api import PdfChatbot
 # Dictionary to store active chatbot sessions by ID
 chatbot_sessions = {}
 

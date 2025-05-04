@@ -136,7 +136,7 @@ def rank_similar_images(input_image, top_k=5, image_paths_list=None):
             axes[i+1].axis('off')
 
     plt.tight_layout()
-    plt.show()
+    #plt.show()
 
     # Limpiar archivo temporal si fue creado
     if isinstance(input_image, np.ndarray) and os.path.exists(temp_path):

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CUPRA Tavascan Manual Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #ddd;
+            border: none;
+            border-radius: 5px 5px 0 0;
+            margin-right: 5px;
+        }
+        .tab.active {
+            background-color: #fff;
+            border-bottom: 2px solid #0066cc;
+        }
+        .tab-content {
+            display: none;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .tab-content.active {
+            display: block;
+            flex: 1;
+        }
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            min-height: 300px;
+            max-height: 500px;
+        }
+        .message {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            max-width: 80%;
+        }
+        .user-message {
+            background-color: #0066cc;
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+        }
+        .bot-message {
+            background-color: #e9e9e9;
+            color: black;
+            align-self: flex-start;
+        }
+        .input-container {
+            display: flex;
+            margin-top: 20px;
+        }
+        .input-container input[type="text"] {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+        .input-container button {
+            padding: 10px 20px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .image-container {
+            display: flex;
+            flex-direction: column;
+        }
+        .upload-container {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+        .preview-container {
+            margin-top: 10px;
+            position: relative;
+        }
+        #imagePreview {
+            max-width: 100%;
+            max-height: 300px;
+            display: none;
+        }
+        #selectionBox {
+            position: absolute;
+            border: 2px dashed red;
+            display: none;
+            pointer-events: none;
+        }
+        .result-container {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            display: none;
+        }
+        .page-numbers {
+            margin-top: 10px;
+            font-style: italic;
+            color: #666;
+        }
+        .loading {
+            text-align: center;
+            margin: 20px;
+            display: none;
+        }
+        .cropped-image {
+            max-width: 250px;
+            max-height: 200px;
+            margin-top: 10px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>CUPRA Tavascan Manual Chat</h1>
+        </div>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="openTab('text-tab')">Text Chat</button>
+            <button class="tab" onclick="openTab('image-tab')">Image Query</button>
+        </div>
+        
+        <!-- Text Chat Tab -->
+        <div id="text-tab" class="tab-content active">
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot-message">
+                        Hello! I'm your CUPRA Tavascan assistant. Ask me anything about your manual.
+                    </div>
+                </div>
+                <div class="input-container">
+                    <input type="text" id="textQuery" placeholder="Ask a question about your CUPRA Tavascan...">
+                    <button onclick="sendTextQuery()">Send</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Image Query Tab -->
+        <div id="image-tab" class="tab-content">
+            <div class="image-container">
+                <div class="upload-container">
+                    <h3>Upload a dashboard image:</h3>
+                    <input type="file" id="imageUpload" accept="image/*">
+                    <p>Click and drag on the image to select a component:</p>
+                    
+                    <div class="preview-container">
+                        <img id="imagePreview" src="#" alt="Preview">
+                        <div id="selectionBox"></div>
+                    </div>
+                </div>
+                
+                <button id="analyzeButton" onclick="analyzeImage()" disabled>Analyze Component</button>
+                
+                <div id="loading" class="loading">
+                    <p>Analyzing component...</p>
+                </div>
+                
+                <div id="resultContainer" class="result-container">
+                    <h3>Component Analysis:</h3>
+                    <div class="result-content">
+                        <div id="resultText"></div>
+                        <div class="page-numbers">
+                            Pages: <span id="pageNumbers"></span>
+                        </div>
+                        <div>
+                            <img id="croppedImage" class="cropped-image">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Chat history
+        let chatHistory = [];
+        
+        // Box coordinates for image selection
+        let boxCoordinates = null;
+        let startX = 0, startY = 0;
+        let isSelecting = false;
+        
+        // Initialize tabs
+        function openTab(tabId) {
+            const tabs = document.getElementsByClassName("tab");
+            for (let i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove("active");
+            }
+            
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.remove("active");
+            }
+            
+            document.getElementById(tabId).classList.add("active");
+            event.currentTarget.classList.add("active");
+        }
+        
+        // Text query handling
+        document.getElementById("textQuery").addEventListener("keyup", function(event) {
+            if (event.key === "Enter") {
+                sendTextQuery();
+            }
+        });
+        
+        function sendTextQuery() {
+            const queryInput = document.getElementById("textQuery");
+            const query = queryInput.value.trim();
+            
+            if (!query) return;
+            
+            // Add user message to chat
+            addMessage(query, "user");
+            
+            // Clear input
+            queryInput.value = "";
+            
+            // Add query to history
+            chatHistory.push({
+                role: "user",
+                content: query
+            });
+            
+            // Show loading state
+            addLoadingMessage();
+            
+            // Send request to backend
+            fetch('/api/chat_session', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    query: query,
+                    history: chatHistory.slice(0, -1) // Send history excluding current message
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Remove loading message
+                removeLoadingMessage();
+                
+                let message = data.answer || "I couldn't find information about that.";
+                
+                // Format page numbers if available
+                if (data.page_numbers && data.page_numbers.length > 0) {
+                    message += `\n\nRelevant pages: ${data.page_numbers.join(", ")}`;
+                }
+                
+                // Add bot message to chat
+                addMessage(message, "bot");
+                
+                // Add response to history
+                chatHistory.push({
+                    role: "assistant",
+                    content: message
+                });
+            })
+            .catch(error => {
+                // Remove loading message
+                removeLoadingMessage();
+                
+                console.error('Error:', error);
+                addMessage("Sorry, there was an error processing your request.", "bot");
+            });
+        }
+        
+        function addMessage(text, sender) {
+            const chatMessages = document.getElementById("chatMessages");
+            const messageDiv = document.createElement("div");
+            messageDiv.className = `message ${sender}-message`;
+            
+            // Format text with line breaks
+            messageDiv.innerText = text;
+            
+            chatMessages.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function addLoadingMessage() {
+            const chatMessages = document.getElementById("chatMessages");
+            const loadingDiv = document.createElement("div");
+            loadingDiv.className = "message bot-message loading-message";
+            loadingDiv.innerText = "Thinking...";
+            chatMessages.appendChild(loadingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        function removeLoadingMessage() {
+            const loadingMessage = document.querySelector(".loading-message");
+            if (loadingMessage) {
+                loadingMessage.remove();
+            }
+        }
+        
+        // Image handling
+        document.getElementById('imageUpload').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                const img = document.getElementById('imagePreview');
+                img.src = event.target.result;
+                img.style.display = 'block';
+                
+                // Reset selection box
+                const selectionBox = document.getElementById('selectionBox');
+                selectionBox.style.display = 'none';
+                boxCoordinates = null;
+                
+                // Enable analyze button only when selection is made
+                document.getElementById('analyzeButton').disabled = true;
+                
+                // Hide previous results
+                document.getElementById('resultContainer').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        });
+        
+        // Image selection handling
+        const imagePreview = document.getElementById('imagePreview');
+        const selectionBox = document.getElementById('selectionBox');
+        
+        imagePreview.addEventListener('mousedown', function(e) {
+            const rect = imagePreview.getBoundingClientRect();
+            startX = e.clientX - rect.left;
+            startY = e.clientY - rect.top;
+            isSelecting = true;
+            
+            // Reset the selection box
+            selectionBox.style.left = startX + 'px';
+            selectionBox.style.top = startY + 'px';
+            selectionBox.style.width = '0px';
+            selectionBox.style.height = '0px';
+            selectionBox.style.display = 'block';
+        });
+        
+        imagePreview.addEventListener('mousemove', function(e) {
+            if (!isSelecting) return;
+            
+            const rect = imagePreview.getBoundingClientRect();
+            const currentX = e.clientX - rect.left;
+            const currentY = e.clientY - rect.top;
+            
+            const width = currentX - startX;
+            const height = currentY - startY;
+            
+            selectionBox.style.width = Math.abs(width) + 'px';
+            selectionBox.style.height = Math.abs(height) + 'px';
+            
+            if (width < 0) {
+                selectionBox.style.left = currentX + 'px';
+            }
+            
+            if (height < 0) {
+                selectionBox.style.top = currentY + 'px';
+            }
+        });
+        
+        imagePreview.addEventListener('mouseup', function(e) {
+            if (!isSelecting) return;
+            
+            isSelecting = false;
+            
+            const rect = imagePreview.getBoundingClientRect();
+            const endX = e.clientX - rect.left;
+            const endY = e.clientY - rect.top;
+            
+            // Calculate actual image coordinates considering the image might be scaled
+            const imgNaturalWidth = imagePreview.naturalWidth;
+            const imgNaturalHeight = imagePreview.naturalHeight;
+            const imgDisplayWidth = imagePreview.width;
+            const imgDisplayHeight = imagePreview.height;
+            
+            const scaleX = imgNaturalWidth / imgDisplayWidth;
+            const scaleY = imgNaturalHeight / imgDisplayHeight;
+            
+            // Calculate box coordinates in the actual image dimensions
+            const x0 = Math.min(startX, endX) * scaleX;
+            const y0 = Math.min(startY, endY) * scaleY;
+            const x1 = Math.max(startX, endX) * scaleX;
+            const y1 = Math.max(startY, endY) * scaleY;
+            
+            // Save coordinates for API call
+            boxCoordinates = `${Math.round(x0)},${Math.round(y0)},${Math.round(x1)},${Math.round(y1)}`;
+            
+            // Enable analyze button
+            document.getElementById('analyzeButton').disabled = false;
+        });
+        
+        function analyzeImage() {
+            const fileInput = document.getElementById('imageUpload');
+            if (!fileInput.files[0] || !boxCoordinates) {
+                alert('Please select an image and a component area');
+                return;
+            }
+            
+            // Show loading indicator
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('resultContainer').style.display = 'none';
+            
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+            formData.append('box_coordinates', boxCoordinates);
+            
+            fetch('/api/image_query', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Hide loading indicator
+                document.getElementById('loading').style.display = 'none';
+                
+                if (data.error) {
+                    alert(`Error: ${data.error}`);
+                    return;
+                }
+                
+                // Show result container
+                const resultContainer = document.getElementById('resultContainer');
+                resultContainer.style.display = 'block';
+                
+                // Update result text
+                document.getElementById('resultText').innerText = data.answer;
+                
+                // Update page numbers
+                const pageNumbers = data.page_numbers ? data.page_numbers.join(', ') : 'N/A';
+                document.getElementById('pageNumbers').innerText = pageNumbers;
+                
+                // Display cropped image if available
+                if (data.image_data) {
+                    const croppedImage = document.getElementById('croppedImage');
+                    croppedImage.src = data.image_data;
+                    croppedImage.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('loading').style.display = 'none';
+                alert('Failed to analyze the image. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>
