@@ -1,0 +1,858 @@
+{
+    "extracted_content_manual\\extracted_content_manual\\images\\page_10_img_1.jpeg": {
+        "figure_number": 1,
+        "page_number": 10
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_11_img_1.png": {
+        "figure_number": 2,
+        "page_number": 11
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_12_img_1.png": {
+        "figure_number": 3,
+        "page_number": 12
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_13_img_1.jpeg": {
+        "figure_number": 4,
+        "page_number": 13
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_16_img_1.png": {
+        "figure_number": 5,
+        "page_number": 16
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_19_img_1.png": {
+        "figure_number": 6,
+        "page_number": 19
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_21_img_1.png": {
+        "figure_number": 7,
+        "page_number": 21
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_23_img_1.png": {
+        "figure_number": 8,
+        "page_number": 23
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_26_img_1.png": {
+        "figure_number": 9,
+        "page_number": 26
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_27_img_1.png": {
+        "figure_number": 10,
+        "page_number": 27
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_28_img_1.jpeg": {
+        "figure_number": 11,
+        "page_number": 28
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_30_img_1.png": {
+        "figure_number": 12,
+        "page_number": 30
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_31_img_1.png": {
+        "figure_number": 13,
+        "page_number": 31
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_33_img_1.png": {
+        "figure_number": 14,
+        "page_number": 33
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_33_img_2.png": {
+        "figure_number": 15,
+        "page_number": 33
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_35_img_1.jpeg": {
+        "figure_number": 16,
+        "page_number": 35
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_37_img_1.png": {
+        "figure_number": 17,
+        "page_number": 37
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_37_img_2.jpeg": {
+        "figure_number": 18,
+        "page_number": 37
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_37_img_3.jpeg": {
+        "figure_number": 19,
+        "page_number": 37
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_38_img_1.jpeg": {
+        "figure_number": 20,
+        "page_number": 38
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_38_img_2.jpeg": {
+        "figure_number": 20,
+        "page_number": 38
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_39_img_1.png": {
+        "figure_number": 22,
+        "page_number": 39
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_39_img_2.jpeg": {
+        "figure_number": 23,
+        "page_number": 39
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_40_img_1.jpeg": {
+        "figure_number": 24,
+        "page_number": 40
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_46_img_1.jpeg": {
+        "figure_number": 25,
+        "page_number": 46
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_46_img_2.jpeg": {
+        "figure_number": 26,
+        "page_number": 46
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_47_img_1.jpeg": {
+        "figure_number": 27,
+        "page_number": 47
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_47_img_2.png": {
+        "figure_number": 27,
+        "page_number": 47
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_48_img_1.jpeg": {
+        "figure_number": 29,
+        "page_number": 48
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_48_img_2.jpeg": {
+        "figure_number": 29,
+        "page_number": 48
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_49_img_1.jpeg": {
+        "figure_number": 31,
+        "page_number": 49
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_49_img_2.jpeg": {
+        "figure_number": 31,
+        "page_number": 49
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_50_img_1.png": {
+        "figure_number": 33,
+        "page_number": 50
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_52_img_1.jpeg": {
+        "figure_number": 34,
+        "page_number": 52
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_53_img_1.png": {
+        "figure_number": 35,
+        "page_number": 53
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_53_img_2.png": {
+        "figure_number": 35,
+        "page_number": 53
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_57_img_1.png": {
+        "figure_number": 37,
+        "page_number": 57
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_57_img_2.png": {
+        "figure_number": 38,
+        "page_number": 57
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_57_img_3.jpeg": {
+        "figure_number": 38,
+        "page_number": 57
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_58_img_1.png": {
+        "figure_number": 40,
+        "page_number": 58
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_58_img_2.png": {
+        "figure_number": 41,
+        "page_number": 58
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_58_img_3.jpeg": {
+        "figure_number": 42,
+        "page_number": 58
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_59_img_1.jpeg": {
+        "figure_number": 43,
+        "page_number": 59
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_61_img_1.jpeg": {
+        "figure_number": 44,
+        "page_number": 61
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_61_img_2.jpeg": {
+        "figure_number": 45,
+        "page_number": 61
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_63_img_1.jpeg": {
+        "figure_number": 46,
+        "page_number": 63
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_63_img_2.png": {
+        "figure_number": 47,
+        "page_number": 63
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_64_img_1.png": {
+        "figure_number": 48,
+        "page_number": 64
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_69_img_1.png": {
+        "figure_number": 49,
+        "page_number": 69
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_69_img_2.png": {
+        "figure_number": 49,
+        "page_number": 69
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_69_img_3.png": {
+        "figure_number": 49,
+        "page_number": 69
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_69_img_4.png": {
+        "figure_number": 51,
+        "page_number": 69
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_72_img_1.png": {
+        "figure_number": 53,
+        "page_number": 72
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_72_img_2.png": {
+        "figure_number": 53,
+        "page_number": 72
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_73_img_1.jpeg": {
+        "figure_number": 55,
+        "page_number": 73
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_73_img_2.jpeg": {
+        "figure_number": 55,
+        "page_number": 73
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_74_img_1.jpeg": {
+        "figure_number": 57,
+        "page_number": 74
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_74_img_2.jpeg": {
+        "figure_number": 58,
+        "page_number": 74
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_75_img_1.jpeg": {
+        "figure_number": 59,
+        "page_number": 75
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_75_img_2.png": {
+        "figure_number": 60,
+        "page_number": 75
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_78_img_1.jpeg": {
+        "figure_number": 61,
+        "page_number": 78
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_78_img_2.jpeg": {
+        "figure_number": 61,
+        "page_number": 78
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_80_img_1.png": {
+        "figure_number": 63,
+        "page_number": 80
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_87_img_1.png": {
+        "figure_number": 64,
+        "page_number": 87
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_88_img_1.png": {
+        "figure_number": 65,
+        "page_number": 88
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_88_img_2.png": {
+        "figure_number": 66,
+        "page_number": 88
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_88_img_3.png": {
+        "figure_number": 66,
+        "page_number": 88
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_89_img_1.png": {
+        "figure_number": 68,
+        "page_number": 89
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_90_img_1.jpeg": {
+        "figure_number": 69,
+        "page_number": 90
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_93_img_1.png": {
+        "figure_number": 70,
+        "page_number": 93
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_94_img_1.jpeg": {
+        "figure_number": 71,
+        "page_number": 94
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_98_img_1.jpeg": {
+        "figure_number": 72,
+        "page_number": 98
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_98_img_2.jpeg": {
+        "figure_number": 73,
+        "page_number": 98
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_98_img_3.jpeg": {
+        "figure_number": 74,
+        "page_number": 98
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_99_img_1.jpeg": {
+        "figure_number": 75,
+        "page_number": 99
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_99_img_2.jpeg": {
+        "figure_number": 76,
+        "page_number": 99
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_101_img_1.jpeg": {
+        "figure_number": 77,
+        "page_number": 101
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_101_img_2.jpeg": {
+        "figure_number": 78,
+        "page_number": 101
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_101_img_3.png": {
+        "figure_number": 79,
+        "page_number": 101
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_103_img_1.jpeg": {
+        "figure_number": 80,
+        "page_number": 103
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_104_img_1.png": {
+        "figure_number": 81,
+        "page_number": 104
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_107_img_1.png": {
+        "figure_number": 82,
+        "page_number": 107
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_107_img_2.png": {
+        "figure_number": 83,
+        "page_number": 107
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_108_img_1.jpeg": {
+        "figure_number": 84,
+        "page_number": 108
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_109_img_1.png": {
+        "figure_number": 85,
+        "page_number": 109
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_110_img_1.png": {
+        "figure_number": 86,
+        "page_number": 110
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_110_img_2.jpeg": {
+        "figure_number": 86,
+        "page_number": 110
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_112_img_1.png": {
+        "figure_number": 88,
+        "page_number": 112
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_112_img_2.png": {
+        "figure_number": 89,
+        "page_number": 112
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_113_img_1.png": {
+        "figure_number": 90,
+        "page_number": 113
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_114_img_1.jpeg": {
+        "figure_number": 91,
+        "page_number": 114
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_114_img_2.jpeg": {
+        "figure_number": 92,
+        "page_number": 114
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_115_img_1.png": {
+        "figure_number": 93,
+        "page_number": 115
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_117_img_1.jpeg": {
+        "figure_number": 94,
+        "page_number": 117
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_121_img_1.jpeg": {
+        "figure_number": 95,
+        "page_number": 121
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_122_img_1.jpeg": {
+        "figure_number": 96,
+        "page_number": 122
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_123_img_1.jpeg": {
+        "figure_number": 97,
+        "page_number": 123
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_124_img_1.jpeg": {
+        "figure_number": 98,
+        "page_number": 124
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_126_img_1.png": {
+        "figure_number": 99,
+        "page_number": 126
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_128_img_1.png": {
+        "figure_number": 100,
+        "page_number": 128
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_128_img_2.png": {
+        "figure_number": 100,
+        "page_number": 128
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_132_img_1.png": {
+        "figure_number": 102,
+        "page_number": 132
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_133_img_1.jpeg": {
+        "figure_number": 103,
+        "page_number": 133
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_134_img_1.png": {
+        "figure_number": 104,
+        "page_number": 134
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_136_img_1.png": {
+        "figure_number": 105,
+        "page_number": 136
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_139_img_1.jpeg": {
+        "figure_number": 106,
+        "page_number": 139
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_139_img_2.jpeg": {
+        "figure_number": 107,
+        "page_number": 139
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_149_img_1.png": {
+        "figure_number": 108,
+        "page_number": 149
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_153_img_1.jpeg": {
+        "figure_number": 109,
+        "page_number": 153
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_154_img_1.jpeg": {
+        "figure_number": 110,
+        "page_number": 154
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_157_img_1.jpeg": {
+        "figure_number": 111,
+        "page_number": 157
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_165_img_1.jpeg": {
+        "figure_number": 112,
+        "page_number": 165
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_166_img_1.png": {
+        "figure_number": 113,
+        "page_number": 166
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_166_img_2.jpeg": {
+        "figure_number": 114,
+        "page_number": 166
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_167_img_1.jpeg": {
+        "figure_number": 115,
+        "page_number": 167
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_167_img_2.png": {
+        "figure_number": 115,
+        "page_number": 167
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_168_img_1.jpeg": {
+        "figure_number": 117,
+        "page_number": 168
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_170_img_1.png": {
+        "figure_number": 118,
+        "page_number": 170
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_171_img_1.png": {
+        "figure_number": 119,
+        "page_number": 171
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_174_img_1.png": {
+        "figure_number": 120,
+        "page_number": 174
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_176_img_1.png": {
+        "figure_number": 121,
+        "page_number": 176
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_176_img_2.png": {
+        "figure_number": 121,
+        "page_number": 176
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_178_img_1.png": {
+        "figure_number": 123,
+        "page_number": 178
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_179_img_1.png": {
+        "figure_number": 124,
+        "page_number": 179
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_179_img_2.png": {
+        "figure_number": 124,
+        "page_number": 179
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_179_img_3.png": {
+        "figure_number": 126,
+        "page_number": 179
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_180_img_1.png": {
+        "figure_number": 127,
+        "page_number": 180
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_187_img_1.png": {
+        "figure_number": 128,
+        "page_number": 187
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_189_img_1.png": {
+        "figure_number": 129,
+        "page_number": 189
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_190_img_1.png": {
+        "figure_number": 130,
+        "page_number": 190
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_191_img_1.png": {
+        "figure_number": 131,
+        "page_number": 191
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_192_img_1.png": {
+        "figure_number": 132,
+        "page_number": 192
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_196_img_1.jpeg": {
+        "figure_number": 133,
+        "page_number": 196
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_196_img_2.jpeg": {
+        "figure_number": 134,
+        "page_number": 196
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_197_img_1.jpeg": {
+        "figure_number": 135,
+        "page_number": 197
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_197_img_2.jpeg": {
+        "figure_number": 135,
+        "page_number": 197
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_200_img_1.jpeg": {
+        "figure_number": 137,
+        "page_number": 200
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_204_img_1.png": {
+        "figure_number": 138,
+        "page_number": 204
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_207_img_1.png": {
+        "figure_number": 139,
+        "page_number": 207
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_210_img_1.png": {
+        "figure_number": 140,
+        "page_number": 210
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_211_img_1.png": {
+        "figure_number": 141,
+        "page_number": 211
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_211_img_2.png": {
+        "figure_number": 141,
+        "page_number": 211
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_212_img_1.jpeg": {
+        "figure_number": 143,
+        "page_number": 212
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_212_img_2.png": {
+        "figure_number": 144,
+        "page_number": 212
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_212_img_3.png": {
+        "figure_number": 145,
+        "page_number": 212
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_216_img_1.png": {
+        "figure_number": 146,
+        "page_number": 216
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_216_img_2.png": {
+        "figure_number": 146,
+        "page_number": 216
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_217_img_1.png": {
+        "figure_number": 148,
+        "page_number": 217
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_223_img_1.png": {
+        "figure_number": 149,
+        "page_number": 223
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_224_img_1.jpeg": {
+        "figure_number": 150,
+        "page_number": 224
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_226_img_1.png": {
+        "figure_number": 151,
+        "page_number": 226
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_227_img_1.jpeg": {
+        "figure_number": 152,
+        "page_number": 227
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_227_img_2.jpeg": {
+        "figure_number": 152,
+        "page_number": 227
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_229_img_1.jpeg": {
+        "figure_number": 154,
+        "page_number": 229
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_230_img_1.jpeg": {
+        "figure_number": 155,
+        "page_number": 230
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_231_img_1.png": {
+        "figure_number": 156,
+        "page_number": 231
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_237_img_1.jpeg": {
+        "figure_number": 157,
+        "page_number": 237
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_248_img_1.jpeg": {
+        "figure_number": 158,
+        "page_number": 248
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_252_img_1.png": {
+        "figure_number": 159,
+        "page_number": 252
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_261_img_1.png": {
+        "figure_number": 160,
+        "page_number": 261
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_265_img_1.png": {
+        "figure_number": 161,
+        "page_number": 265
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_268_img_1.jpeg": {
+        "figure_number": 162,
+        "page_number": 268
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_276_img_1.png": {
+        "figure_number": 163,
+        "page_number": 276
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_280_img_1.jpeg": {
+        "figure_number": 164,
+        "page_number": 280
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_284_img_1.jpeg": {
+        "figure_number": 165,
+        "page_number": 284
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_284_img_2.jpeg": {
+        "figure_number": 166,
+        "page_number": 284
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_285_img_1.jpeg": {
+        "figure_number": 167,
+        "page_number": 285
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_285_img_2.jpeg": {
+        "figure_number": 168,
+        "page_number": 285
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_285_img_3.jpeg": {
+        "figure_number": 168,
+        "page_number": 285
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_286_img_1.png": {
+        "figure_number": 170,
+        "page_number": 286
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_286_img_2.jpeg": {
+        "figure_number": 171,
+        "page_number": 286
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_287_img_1.jpeg": {
+        "figure_number": 172,
+        "page_number": 287
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_287_img_2.jpeg": {
+        "figure_number": 172,
+        "page_number": 287
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_288_img_1.jpeg": {
+        "figure_number": 174,
+        "page_number": 288
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_292_img_1.png": {
+        "figure_number": 175,
+        "page_number": 292
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_296_img_1.png": {
+        "figure_number": 176,
+        "page_number": 296
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_297_img_1.png": {
+        "figure_number": 177,
+        "page_number": 297
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_298_img_1.jpeg": {
+        "figure_number": 178,
+        "page_number": 298
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_298_img_2.jpeg": {
+        "figure_number": 179,
+        "page_number": 298
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_298_img_3.jpeg": {
+        "figure_number": 179,
+        "page_number": 298
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_300_img_1.png": {
+        "figure_number": 181,
+        "page_number": 300
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_300_img_2.jpeg": {
+        "figure_number": 182,
+        "page_number": 300
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_300_img_3.jpeg": {
+        "figure_number": 182,
+        "page_number": 300
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_301_img_1.png": {
+        "figure_number": 184,
+        "page_number": 301
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_302_img_1.jpeg": {
+        "figure_number": 185,
+        "page_number": 302
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_303_img_1.png": {
+        "figure_number": 186,
+        "page_number": 303
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_306_img_1.jpeg": {
+        "figure_number": 187,
+        "page_number": 306
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_306_img_2.jpeg": {
+        "figure_number": 187,
+        "page_number": 306
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_307_img_1.jpeg": {
+        "figure_number": 189,
+        "page_number": 307
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_307_img_2.jpeg": {
+        "figure_number": 189,
+        "page_number": 307
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_309_img_1.jpeg": {
+        "figure_number": 191,
+        "page_number": 309
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_309_img_2.jpeg": {
+        "figure_number": 191,
+        "page_number": 309
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_310_img_1.jpeg": {
+        "figure_number": 193,
+        "page_number": 310
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_310_img_2.png": {
+        "figure_number": 194,
+        "page_number": 310
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_316_img_1.jpeg": {
+        "figure_number": 195,
+        "page_number": 316
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_316_img_2.jpeg": {
+        "figure_number": 196,
+        "page_number": 316
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_318_img_1.png": {
+        "figure_number": 197,
+        "page_number": 318
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_319_img_1.jpeg": {
+        "figure_number": 198,
+        "page_number": 319
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_320_img_1.png": {
+        "figure_number": 199,
+        "page_number": 320
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_321_img_1.png": {
+        "figure_number": 200,
+        "page_number": 321
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_329_img_1.jpeg": {
+        "figure_number": 201,
+        "page_number": 329
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_330_img_1.png": {
+        "figure_number": 202,
+        "page_number": 330
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_331_img_1.png": {
+        "figure_number": 203,
+        "page_number": 331
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_334_img_1.jpeg": {
+        "figure_number": 204,
+        "page_number": 334
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_334_img_2.png": {
+        "figure_number": 205,
+        "page_number": 334
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_334_img_3.jpeg": {
+        "figure_number": 206,
+        "page_number": 334
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_335_img_1.jpeg": {
+        "figure_number": 207,
+        "page_number": 335
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_335_img_2.png": {
+        "figure_number": 208,
+        "page_number": 335
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_337_img_1.png": {
+        "figure_number": 209,
+        "page_number": 337
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_355_img_1.png": {
+        "figure_number": 210,
+        "page_number": 355
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_355_img_2.png": {
+        "figure_number": 211,
+        "page_number": 355
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_355_img_3.png": {
+        "figure_number": 211,
+        "page_number": 355
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_355_img_4.png": {
+        "figure_number": 213,
+        "page_number": 355
+    },
+    "extracted_content_manual\\extracted_content_manual\\images\\page_363_img_1.jpeg": {
+        "figure_number": 214,
+        "page_number": 363
+    }
+}

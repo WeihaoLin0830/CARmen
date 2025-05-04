@@ -3,18 +3,25 @@
     --cupra-dark: #232323;
     --cupra-light: #f5f5f5;
 }
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Montserrat', Arial, sans-serif;
+    max-height: 100vh;
+    overflow: hidden; /* Evita el desbordamiento de la ventana */
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden; /* Evita el scroll en la pantalla */
+    position: fixed; /* Fix the page position */
+    width: 100%; /* Ensure full width */
 }
 
 body {
     background: #000; /* Color de respaldo si el video no se carga */
     color: var(--cupra-light);
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
 }

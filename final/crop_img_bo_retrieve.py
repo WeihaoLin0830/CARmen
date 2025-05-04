@@ -390,7 +390,7 @@ class ImageChatSession:
         Answer this user question: "{query}"
         
         Format your response as a valid JSON object with these fields:
-        - "answer": Provide an expert yet conversational description of this CUPRA Tavascan component. Cover its name, function, how it enhances the driving experience, and any unique features that distinguish it. Draw on the context provided to deliver accurate technical information in an engaging way. Do it very concisely and don't mention that you have used provided context.
+        - "answer": Provide an expert yet conversational description of this CUPRA Tavascan component. Cover its name, function, how it enhances the driving experience, and any unique features that distinguish it if possible. If not just describe the component. Do it very concisely and don't mention that you have used provided context.
         - "page_numbers": An array of page numbers that contain relevant information
         - "figure_numbers": An array of figure references if any are mentioned in the context
         

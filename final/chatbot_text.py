@@ -53,6 +53,7 @@ class PdfChatbot:
             "You are a helpful assistant specialized in answering questions about a cupra Tavascan manual concisely. "
             "Base your answers on the provided document context. "
             "If you know the answer, respond with it. "
+            "Respond with a maximum of 6 sentences. "
             "Always cite the page numbers from the context you used. "
             "Try to be concise and avoid unnecessary details. "
             "You must answer in a json format in the style '{'answer': '...', 'page_numbers': [1, 2, 3], figure_numbers: [1, 2, 3]}' "
