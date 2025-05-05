@@ -4,7 +4,7 @@
 ## 🧠 Project Overview
 This platform offers potential buyers a smarter, more interactive way to explore the Cupra Tavascan. By combining AI-powered conversation, image recognition, and immersive 3D visualization, users can learn about the vehicle in a dynamic and intuitive manner.
 
-<img src="img/photo1.png" width="300" alt="Cupra Tavascan Experience Platform" />
+<img src="img/cupra_web.png" width="300" alt="Cupra Tavascan Experience Platform" />
 
 ## ✨ Key Features
 * **Conversational Chatbot** Ask questions and receive real-time answers and relevant images and pages from the Cupra Tavascan manual.
@@ -12,6 +12,8 @@ This platform offers potential buyers a smarter, more interactive way to explore
 * **Image Recognition** Upload photos of the car or its components to receive detailed explanations.
 * **Object Detection** Automatically detects and labels parts of the car in images.
 * **Brand-Aligned UI** A sleek, modern interface inspired by Cupra's visual identity, clean, intuitive, and responsive.
+
+<img src="img/seatbelt.png" width="300" alt="Cupra Tavascan Experience Platform" />
 
 ## ⚙️ How It Works
 1. 🧹 **Data Preprocessing**
