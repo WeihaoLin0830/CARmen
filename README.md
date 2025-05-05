@@ -55,7 +55,9 @@ To run the project locally:
 1. Navigate to the `final/` folder.
 2. Run the backend server with:
 
+```
 python app.py
+```
 
 3. Open the `index.html` file in your browser to interact with the platform.
 Make sure all dependencies are installed and the [manual PDF](manual.pdf) is preprocessed before launching the app.
