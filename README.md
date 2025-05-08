@@ -41,7 +41,7 @@ This platform offers potential buyers a smarter, more interactive way to explore
      
 4. 🧠 **Computer Vision**
 
-We used Roboflow to streamline the creation of a small image dataset and to handle the annotation process efficiently. Leveraging a YOLO-based model provided by the platform, we performed fine-tuning to tailor the detector specifically to our vehicle. This re-trained model delivered more accurate and context-aware results compared to an off-the-shelf version, improving detection performance for our use case.
+  * We used Roboflow to streamline the creation of a small image dataset and to handle the annotation process efficiently. Leveraging a YOLO-based model provided by the platform, we performed fine-tuning to tailor the detector specifically to our vehicle. This re-trained model delivered more accurate and context-aware results compared to an off-the-shelf version, improving detection performance for our use case.
 
 <img src="img/seatbelt.png" width="300" alt="Cupra Tavascan Experience Platform" />
 
