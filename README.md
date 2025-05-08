@@ -13,7 +13,6 @@ This platform offers potential buyers a smarter, more interactive way to explore
 * **Object Detection** Automatically detects and labels parts of the car in images.
 * **Brand-Aligned UI** A sleek, modern interface inspired by Cupra's visual identity, clean, intuitive, and responsive.
 
-<img src="img/seatbelt.png" width="300" alt="Cupra Tavascan Experience Platform" />
 
 ## ⚙️ How It Works
 1. 🧹 **Data Preprocessing**
@@ -39,6 +38,12 @@ This platform offers potential buyers a smarter, more interactive way to explore
    * **Image Upload & Region Selection** using the Canvas API
    * **3D Viewer** for exploring the interior of the vehicle.
    * The frontend maintains visual coherence with Cupra's brand style.
+     
+4. 🧠 **Computer Vision**
+
+We used Roboflow to streamline the creation of a small image dataset and to handle the annotation process efficiently. Leveraging a YOLO-based model provided by the platform, we performed fine-tuning to tailor the detector specifically to our vehicle. This re-trained model delivered more accurate and context-aware results compared to an off-the-shelf version, improving detection performance for our use case.
+
+<img src="img/seatbelt.png" width="300" alt="Cupra Tavascan Experience Platform" />
 
 ## 🤖 Models
 * **LLM**: Gemini-2.0 Flash - Used for query expansion, retrieval, and image description
